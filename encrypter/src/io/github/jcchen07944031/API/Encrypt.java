@@ -1,4 +1,4 @@
-package io.github.jcchen07944031;
+package io.github.jcchen07944031.API;
 
 import java.security.MessageDigest;
 import javax.crypto.Cipher;
