@@ -15,9 +15,13 @@ public class Account {
 	private String accessToken;
 
 	public Account(String account, String password) {
-		httpClient = new HttpClient();
+		this.httpClient = new HttpClient();
 		this.account = account;
 		this.password = password;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
 	}
 
 	public String login() {

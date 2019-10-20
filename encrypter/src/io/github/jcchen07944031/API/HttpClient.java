@@ -12,6 +12,8 @@ public class HttpClient {
 
 	private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+	private String cookie = "";
+
 	private OkHttpClient client;
 	public HttpClient() {
 		client = new OkHttpClient();
@@ -19,11 +21,15 @@ public class HttpClient {
 
 	public String get(String url) {
 		try {
-			Request request = new Request.Builder()
-						.url(url)
+			Request.Builder builder = new Request.Builder();
+			if(!cookie.equals(""))
+				builder.addHeader("Cookie", cookie);
+			Request request = builder.url(url)
 						.get()
 						.build();
 			Response response = client.newCall(request).execute();
+			if(!response.headers("Set-Cookie").isEmpty())
+				cookie = response.headers("Set-Cookie").get(0).split(";")[0];
 			return response.body().string();
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -34,11 +40,16 @@ public class HttpClient {
 	public String post(String url, String json) {
 		try {
 			RequestBody body = RequestBody.create(JSON, json);
-			Request request = new Request.Builder()
-						.url(url)
+			Request.Builder builder = new Request.Builder();
+			if(!cookie.equals(""))
+				builder.addHeader("Cookie", cookie);
+			Request request = builder.url(url)
 						.post(body)
 						.build();
 			Response response = client.newCall(request).execute();
+			if(!response.headers("Set-Cookie").isEmpty())
+				cookie = response.headers("Set-Cookie").get(0).split(";")[0];
+			System.out.println(cookie);
 			return response.body().string();
 		} catch(Exception ex) {
 			ex.printStackTrace();
