@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 Constants.java
 encrypter/.classpath
 encrypter/.project
 encrypter/.settings/org.eclipse.jdt.core.prefs
+=======
+Backend/bin/
+Backend/src/io/github/jcchen07944031/Entities/Constants.java
+Backend/.classpath
+Backend/.project
+Backend/.settings/org.eclipse.jdt.core.prefs
+>>>>>>> 5407a3d... Rename folder.
