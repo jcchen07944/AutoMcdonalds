@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+	<title>AutoMcdonalds</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<div id="am-page">
+		<aside id="am-aside" class="border js-fullheight">
+			<h1 id="am-logo"><a href="index.html">Auto<br>Mcdonalds</a></h1>
+			<nav id="am-menu">
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li class="am-active"><a href="#">Register</a></li>
+					<li><a href="#">History</a></li>
+					<li><a href="#">About</a></li>
+				</ul>
+			</nav>
+			
+			<div class="am-footer">
+				<p><small><span>&copy; 2019 JCChen. All Rights Reserved.</span></small></p>
+				<ul>
+					<li><a href="https://github.com/jcchen07944031/AutoMcdonalds" target="_blank"><i class="icon-github"></i></a></li>
+				</ul>
+			</div>
+		</aside>
+		<div id="am-content" class="js-fullheight" style="background-image: url(images/img_bg_3.jpg);background-size: cover;">
+			<div id="am-register" class="am-content-block">
+				<div id="am-register-form">
+					<div>
+						<span id="am-register-title">登記</span>
+					</div>
+					<div class="am-wrap-input validate-input" data-validate = "Username is required">
+						<input class="am-input" type="text" name="username" placeholder="Username">
+					</div>
+					
+					<div class="am-wrap-input validate-input" data-validate = "Password is required">
+						<input class="am-input" type="password" name="pass" placeholder="Password">
+					</div>
+					
+					<div class="am-wrap-input validate-input">
+						<input class="am-input" type="text" name="index" placeholder="Index">
+					</div>
+					
+					<div id="am-register-enter" class="am-wrap-button">
+						<button class="am-button">
+							確認
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<script src="js/jquery.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
