@@ -5,8 +5,13 @@ encrypter/.project
 encrypter/.settings/org.eclipse.jdt.core.prefs
 =======
 Backend/bin/
-Backend/src/io/github/jcchen07944031/Entities/Constants.java
 Backend/.classpath
 Backend/.project
 Backend/.settings/org.eclipse.jdt.core.prefs
+<<<<<<< HEAD
 >>>>>>> 5407a3d... Rename folder.
+=======
+Backend/build/
+Backend/.gradle/
+Constants.java
+>>>>>>> 6740c3e... Using gradle.
