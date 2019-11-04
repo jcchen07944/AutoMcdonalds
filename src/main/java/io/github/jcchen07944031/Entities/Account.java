@@ -14,10 +14,21 @@ public class Account {
 	private String password;
 	private String accessToken;
 
+<<<<<<< HEAD
+=======
+	public Account() {
+		this.httpClient = new HttpClient();
+		this.account = "";
+		this.password = "";
+		this.accessToken = "";
+	}
+
+>>>>>>> 909c112... Register post test ok.
 	public Account(String account, String password) {
 		this.httpClient = new HttpClient();
 		this.account = account;
 		this.password = password;
+		this.accessToken = "";
 	}
 
 	public String getAccessToken() {

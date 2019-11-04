@@ -19,13 +19,15 @@ import java.nio.charset.Charset;
 
 public class Database {
 	
+	private String databaseRootDir = "/opt/tomcat/latest/webapps/database";
+
 	public Database() {
-		if(!(new File("./database")).isDirectory())
-			(new File("./database")).mkdirs();
+		if(!(new File(databaseRootDir)).isDirectory())
+			(new File(databaseRootDir)).mkdirs();
 	}
 
 	private void createAccount(Account account) {
-		String accountDir = "./database/" + account.getAccount();
+		String accountDir = databaseRootDir + "/" + account.getAccount();
 		if(!(new File(accountDir)).isDirectory())
 			(new File(accountDir)).mkdirs();
 		try {
@@ -45,8 +47,8 @@ public class Database {
 	}
 
 	public void updateAccount(Account account) {
-		String accountDir = "./database/" + account.getAccount();
-		if(!(new File("./database/" + account.getAccount()).isDirectory())) {
+		String accountDir = databaseRootDir + account.getAccount();
+		if(!(new File(databaseRootDir + account.getAccount()).isDirectory())) {
 			createAccount(account);
 		}
 		try {
@@ -62,14 +64,14 @@ public class Database {
 	public ArrayList<Account> getAccounts() {
 		ArrayList<Account> accountList = new ArrayList<Account>();
 
-		File database = new File("./database");
+		File database = new File(databaseRootDir);
 		for(File files : database.listFiles()) {
 			if(files.isDirectory()) {
 				try {
 					Account account = new Account();
 					account.setAccount(files.getName());
-					account.setPassword(Files.readString(Paths.get("./database/" + account.getAccount() + "/Password"), StandardCharsets.UTF_8));
-					account.setAccessToken(Files.readString(Paths.get("./database/" + account.getAccount() + "/AccessToken"), StandardCharsets.UTF_8));
+					account.setPassword(Files.readString(Paths.get(databaseRootDir + account.getAccount() + "/Password"), StandardCharsets.UTF_8));
+					account.setAccessToken(Files.readString(Paths.get(databaseRootDir + account.getAccount() + "/AccessToken"), StandardCharsets.UTF_8));
 					accountList.add(account);
 				} catch(Exception ex) {
 					ex.printStackTrace();

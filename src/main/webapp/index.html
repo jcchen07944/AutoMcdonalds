@@ -36,19 +36,19 @@
 						<span id="am-register-title">登記</span>
 					</div>
 					<div class="am-wrap-input validate-input" data-validate = "Username is required">
-						<input class="am-input" type="text" name="username" placeholder="Username">
+						<input class="am-input" type="text" name="username" placeholder="Username" v-model="username">
 					</div>
 					
 					<div class="am-wrap-input validate-input" data-validate = "Password is required">
-						<input class="am-input" type="password" name="pass" placeholder="Password">
+						<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password">
 					</div>
 					
 					<div class="am-wrap-input validate-input">
-						<input class="am-input" type="text" name="index" placeholder="Index">
+						<input class="am-input" type="text" name="index" placeholder="Index" v-model="index">
 					</div>
 					
 					<div id="am-register-enter" class="am-wrap-button">
-						<button class="am-button">
+						<button class="am-button" @click="submit">
 							確認
 						</button>
 					</div>
@@ -57,8 +57,35 @@
 		</div>
 	</div>
 	
-	
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/main.js"></script>
+	
+	<script>
+            var register = new Vue({
+                el:'#am-register-form',
+                data:{
+                    username:'',
+                    password:'',
+                    index:''
+                },
+                methods: {
+                    submit() {
+			axios.post('/AutoMcdonalds/api/register', {
+				username: this.username, 
+				password: this.password,
+				index: this.index
+			})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+                    }                
+                }
+            });
+        </script>
 </body>
 </html>
