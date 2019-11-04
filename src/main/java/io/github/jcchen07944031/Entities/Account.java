@@ -24,7 +24,14 @@ public class Account {
 		return accessToken;
 	}
 
+<<<<<<< HEAD
 	public String login() {
+=======
+	public boolean login() {
+		if(verifyAccessToken())
+			return true;
+
+>>>>>>> 4655834... Adjust login function.
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_LOGIN);
 		postContent.setAccount(account);
 		postContent.setPassword(password);
@@ -38,13 +45,21 @@ public class Account {
 								.getJSONObject("results")
 								.getJSONObject("member_info")
 								.get("access_token");
+<<<<<<< HEAD
 					System.out.println(accessToken);
+=======
+					return true;
+>>>>>>> 4655834... Adjust login function.
 				}
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+<<<<<<< HEAD
 		return "";
+=======
+		return false;
+>>>>>>> 4655834... Adjust login function.
 	}
 
 	public String logout() {
