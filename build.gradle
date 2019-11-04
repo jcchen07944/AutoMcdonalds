@@ -15,9 +15,6 @@ sourceSets {
 buildDir = 'bin'
 
 repositories {
-	maven { url "http://repo.maven.apache.org/maven2" }
-	maven { url "http://repo1.maven.org/maven2/" }
-	maven { url "http://amateras.sourceforge.jp/mvn/" }
 	mavenCentral()
 }
 
@@ -26,5 +23,11 @@ dependencies {
 	//compile 'com.squareup.okio:okio:2.4.1'
 	compile 'org.json:json:20190722'
 	compile 'org.glassfish.jersey.core:jersey-server:2.29.1'
-	//compile 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+	compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.29.1'
+	compile 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+	compile 'org.glassfish.jersey.inject:jersey-hk2:2.29.1'
+}
+
+war {
+    archiveName = 'AutoMcdonalds.war'
 }

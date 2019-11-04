@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 Constants.java
 encrypter/.classpath
 encrypter/.project
@@ -13,5 +14,9 @@ Backend/.settings/org.eclipse.jdt.core.prefs
 =======
 Backend/build/
 Backend/.gradle/
+=======
+bin/
+.gradle/
+>>>>>>> c2aac7f... Using Tomcat to deploy website.
 Constants.java
 >>>>>>> 6740c3e... Using gradle.

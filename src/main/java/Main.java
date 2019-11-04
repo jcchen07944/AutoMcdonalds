@@ -1,15 +1,13 @@
 //import tw.com.mcddaily.jni.Encrypt;
 import io.github.jcchen07944031.API.HttpClient;
-import io.github.jcchen07944031.API.RestApplication;
+import io.github.jcchen07944031.API.RESTful;
 import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.Coupon;
-
-import java.net.*;
-import org.glassfish.jersey.server.ResourceConfig;
 
 public class Main {
 
 	public static void main(String[] argv) {
+<<<<<<< HEAD:Backend/src/main/java/Main.java
 <<<<<<< HEAD:Backend/src/Main.java
 <<<<<<< HEAD
 		Account account = new Account("", "");
@@ -23,6 +21,8 @@ public class Main {
 =======
 =======
 		JettyHttpContainerFactory.createServer(URI.create("http://localhost:4067/"), new RestApplication());
+=======
+>>>>>>> c2aac7f... Using Tomcat to deploy website.:src/main/java/Main.java
 /*
 >>>>>>> 6740c3e... Using gradle.:Backend/src/main/java/Main.java
 		Database database = new Database();
