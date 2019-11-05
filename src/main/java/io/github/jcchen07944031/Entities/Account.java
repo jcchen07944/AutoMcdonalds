@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class Account {
 
 	private HttpClient httpClient;
-	private String account;
+	private String username;
 	private String password;
 	private String accessToken;
 
@@ -18,19 +18,46 @@ public class Account {
 =======
 	public Account() {
 		this.httpClient = new HttpClient();
-		this.account = "";
+		this.username = "";
 		this.password = "";
 		this.accessToken = "";
 	}
 
+<<<<<<< HEAD
 >>>>>>> 909c112... Register post test ok.
 	public Account(String account, String password) {
+=======
+	public Account(String username, String password) {
+>>>>>>> 7e8ee15... Modify confusing variable name.
 		this.httpClient = new HttpClient();
-		this.account = account;
+		this.username = username;
 		this.password = password;
 		this.accessToken = "";
 	}
 
+<<<<<<< HEAD
+=======
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+>>>>>>> 7e8ee15... Modify confusing variable name.
 	public String getAccessToken() {
 		return accessToken;
 	}
@@ -44,7 +71,7 @@ public class Account {
 
 >>>>>>> 4655834... Adjust login function.
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_LOGIN);
-		postContent.setAccount(account);
+		postContent.setUsername(username);
 		postContent.setPassword(password);
 		String result = httpClient.post(McDAPI.McD_API_LOGIN, postContent.getJson());
 		try {

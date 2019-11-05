@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 public class PostContent {
 	private Constants.POSTCONTENT MODE;
 
-	private String account;
+	private String username;
 	private String password;
 	private String orderNo;
 	private String mask;
@@ -51,8 +51,8 @@ public class PostContent {
 		this.MODE = MODE;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setPassword(String password) {
@@ -72,7 +72,7 @@ public class PostContent {
 
 		String data = sourceInfo.versionRelease + sourceInfo.model + sourceInfo.deviceUUID + sourceInfo.date + sourceInfo.appVersion;
 		if(MODE == Constants.POSTCONTENT.MODE_LOGIN) {
-			data += this.account + this.password;
+			data += this.username + this.password;
 		}
 		else if(MODE == Constants.POSTCONTENT.MODE_VERIFY_ACCESS_TOKEN) {
 			data += this.accessToken;
@@ -117,7 +117,7 @@ public class PostContent {
 		}
 
 		if(MODE == Constants.POSTCONTENT.MODE_LOGIN) {
-			retJson += "\"account\": " + "\"" + this.account + "\"," + "\"password\": " + "\"" + this.password + "\",";
+			retJson += "\"account\": " + "\"" + this.username + "\"," + "\"password\": " + "\"" + this.password + "\",";
 		}
 
 		retJson += "\"OrderNo\": " + "\"" + this.orderNo + "\",";
