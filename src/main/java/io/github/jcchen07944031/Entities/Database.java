@@ -2,6 +2,7 @@ package io.github.jcchen07944031.Entities;
 
 import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.History;
+import io.github.jcchen07944031.Entities.Constants;
 
 import java.util.ArrayList;
 
@@ -17,16 +18,42 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.charset.Charset;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
 public class Database {
 	
 	private String databaseRootDir = "/opt/tomcat/latest/webapps/database";
+	private String mysqlUrl = "jdbc:mysql://127.0.0.1:3306/AutoMcdonalds?user=" + Constants.MYSQL_USERNAME + "&password=" + Constants.MYSQL_PASSWORD;
+
+	private Connection connection;
+	private Statement statement;
+	private ResultSet resultSet;
+
 
 	public Database() {
-		if(!(new File(databaseRootDir)).isDirectory())
-			(new File(databaseRootDir)).mkdirs();
+		try {
+			connection = DriverManager.getConnection(mysqlUrl);
+			statement = connection.createStatement();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		//if(!(new File(databaseRootDir)).isDirectory())
+		//	(new File(databaseRootDir)).mkdirs();
 	}
 
-	private void createAccount(Account account) {
+	/*private void createAccount(Account account) {
+		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
+				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '') ";
+
+		try {
+			statement.execute(sql);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 		String accountDir = databaseRootDir + "/" + account.getAccount();
 		if(!(new File(accountDir)).isDirectory())
 			(new File(accountDir)).mkdirs();
@@ -44,10 +71,20 @@ public class Database {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-	}
+	}*/
 
 	public void updateAccount(Account account) {
-		String accountDir = databaseRootDir + account.getAccount();
+		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
+				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '') " + 
+				"ON DUPLICATE KEY UPDATE password = '" + account.getPassword() + "', access_token = '" + account.getAccessToken() + "', keyword = ''";
+
+		try {
+			statement.execute(sql);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		/*String accountDir = databaseRootDir + "/" + account.getAccount();
 		if(!(new File(databaseRootDir + account.getAccount()).isDirectory())) {
 			createAccount(account);
 		}
@@ -57,7 +94,7 @@ public class Database {
 			printWriter.close();
 		} catch(Exception ex) {
 			ex.printStackTrace();
-		}
+		}*/
 
 	}
 
@@ -69,9 +106,9 @@ public class Database {
 			if(files.isDirectory()) {
 				try {
 					Account account = new Account();
-					account.setAccount(files.getName());
-					account.setPassword(Files.readString(Paths.get(databaseRootDir + account.getAccount() + "/Password"), StandardCharsets.UTF_8));
-					account.setAccessToken(Files.readString(Paths.get(databaseRootDir + account.getAccount() + "/AccessToken"), StandardCharsets.UTF_8));
+					account.setUsername(files.getName());
+					account.setPassword(Files.readString(Paths.get(databaseRootDir + "/" + account.getUsername() + "/Password"), StandardCharsets.UTF_8));
+					account.setAccessToken(Files.readString(Paths.get(databaseRootDir + "/" + account.getUsername() + "/AccessToken"), StandardCharsets.UTF_8));
 					accountList.add(account);
 				} catch(Exception ex) {
 					ex.printStackTrace();

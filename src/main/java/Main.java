@@ -7,6 +7,7 @@ import io.github.jcchen07944031.Entities.Coupon;
 public class Main {
 
 	public static void main(String[] argv) {
+<<<<<<< HEAD
 <<<<<<< HEAD:Backend/src/main/java/Main.java
 <<<<<<< HEAD:Backend/src/Main.java
 <<<<<<< HEAD
@@ -25,8 +26,12 @@ public class Main {
 >>>>>>> c2aac7f... Using Tomcat to deploy website.:src/main/java/Main.java
 /*
 >>>>>>> 6740c3e... Using gradle.:Backend/src/main/java/Main.java
+=======
+
+>>>>>>> af1535a... Testing mysql.
 		Database database = new Database();
-		
+		database.updateAccount(new Account("", ""));
+		/*
 		ArrayList<Account> accountList = database.getAccounts();
 		for(int i = 0; i < accountList.size(); i++) {
 			Account account = accountList.get(i);
