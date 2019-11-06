@@ -23,9 +23,13 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+
 public class Database {
 	
-	//private String databaseRootDir = "/opt/tomcat/latest/webapps/database";
 	private String mysqlUrl = "jdbc:mysql://127.0.0.1:3306/AutoMcdonalds?user=" + Constants.MYSQL_USERNAME + "&password=" + Constants.MYSQL_PASSWORD;
 
 	private Connection connection;
@@ -41,62 +45,23 @@ public class Database {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-
-		//if(!(new File(databaseRootDir)).isDirectory())
-		//	(new File(databaseRootDir)).mkdirs();
 	}
 
-	/*private void createAccount(Account account) {
-		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
-				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '') ";
-
-		try {
-			statement.execute(sql);
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		String accountDir = databaseRootDir + "/" + account.getAccount();
-		if(!(new File(accountDir)).isDirectory())
-			(new File(accountDir)).mkdirs();
-		try {
-			File file = new File(accountDir + "/AccessToken");
-			file.createNewFile();
-			file = new File(accountDir + "/Password");
-			file.createNewFile();
-			file = new File(accountDir + "/History");
-			file.createNewFile();
-
-			PrintWriter printWriter = new PrintWriter(accountDir + "/Password");
-			printWriter.print(account.getPassword());
-			printWriter.close();
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}*/
 
 	public void updateAccount(Account account) {
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String password = AESEncrypt(account.getPassword(), Constants.DATABASE_PASSWORD_AES_KEY);
+		String accessToken = AESEncrypt(account.getAccessToken(), Constants.DATABASE_ACCESSTOKEN_AES_KEY);
+		String keyword = AESEncrypt(account.getKeyword(), Constants.DATABASE_KEYWORD_AES_KEY);
 		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
-				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '" + account.getKeyword() + "') " + 
-				"ON DUPLICATE KEY UPDATE password = '" + account.getPassword() + "', access_token = '" + account.getAccessToken() + "', keyword = '" + account.getKeyword() + "'";
+				"VALUES ('" + username + "', '" + password + "', '" + accessToken + "', '" + keyword + "') " + 
+				"ON DUPLICATE KEY UPDATE password = '" + password + "', access_token = '" + accessToken + "', keyword = '" + keyword + "'";
 
 		try {
 			statement.execute(sql);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-
-		/*String accountDir = databaseRootDir + "/" + account.getAccount();
-		if(!(new File(databaseRootDir + account.getAccount()).isDirectory())) {
-			createAccount(account);
-		}
-		try {
-			PrintWriter printWriter = new PrintWriter(accountDir + "/AccessToken");
-			printWriter.print(account.getAccessToken());
-			printWriter.close();
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}*/
-
 	}
 
 	public ArrayList<Account> getAccounts() {
@@ -107,31 +72,36 @@ public class Database {
 			resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
 				Account account = new Account();
-				account.setUsername(resultSet.getString("username"));
-				account.setPassword(resultSet.getString("password"));
-				account.setAccessToken(resultSet.getString("access_token"));
-				account.setKeyword(resultSet.getString("keyword"));
+				account.setUsername(AESDecrypt(resultSet.getString("username"), Constants.DATABASE_USERNAME_AES_KEY));
+				account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
+				account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
+				account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
 				accountList.add(account);
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		/*File database = new File(databaseRootDir);
-		for(File files : database.listFiles()) {
-			if(files.isDirectory()) {
-				try {
-					Account account = new Account();
-					account.setUsername(files.getName());
-					account.setPassword(Files.readString(Paths.get(databaseRootDir + "/" + account.getUsername() + "/Password"), StandardCharsets.UTF_8));
-					account.setAccessToken(Files.readString(Paths.get(databaseRootDir + "/" + account.getUsername() + "/AccessToken"), StandardCharsets.UTF_8));
-					accountList.add(account);
-				} catch(Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		}*/
 
 		return accountList;
+	}
+
+	public Account findAccountByUsername(String username) {
+		username = AESEncrypt(username, Constants.DATABASE_USERNAME_AES_KEY);
+		String sql = "SELECT * FROM account WHERE username='" + username + "'";
+		try {
+			resultSet = statement.executeQuery(sql);
+			if(!resultSet.next())
+				return null;
+			Account account = new Account();
+			account.setUsername(AESDecrypt(resultSet.getString("username"), Constants.DATABASE_USERNAME_AES_KEY));
+			account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
+			account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
+			account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
+			return account;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	public void addHistory(Account account, History history) {
@@ -143,44 +113,44 @@ public class Database {
 		
 		return historyList;
 	}
+	
+	private String AESEncrypt(String str, String key) {
+		if(str.equals(""))
+			return "";
 
-	private void saveObject(String fileName, Object object) {
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName));
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-			FileInputStream fileInputStream = new FileInputStream(new File(fileName));
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-			objectOutputStream.writeInt(objectInputStream.readInt() + 1);
-			objectInputStream.close();
-			fileInputStream.close();
-
-			objectOutputStream.writeObject(object);
-
-			objectOutputStream.close();
-			fileOutputStream.close();
+			Cipher mCipher = Cipher.getInstance("AES");
+			SecretKeySpec mSecretKeySpec = new SecretKeySpec(key.getBytes(), "AES");
+			mCipher.init(Cipher.ENCRYPT_MODE, mSecretKeySpec);
+			return Base64Encode(mCipher.doFinal(str.getBytes()));
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		return "";
 	}
 
-	private ArrayList<Object> getObject(String fileName) {
+	private String AESDecrypt(String str, String key) {
+		if(str.equals(""))
+			return "";
+
 		try {
-			FileInputStream fileInputStream = new FileInputStream(new File(fileName));
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-			ArrayList<Object> objectList = new ArrayList<Object>();
-			
-			int cnt = objectInputStream.readInt();
-			for(int i = 0; i < cnt; i++)
-				objectList.add(objectInputStream.readObject());
-
-			objectInputStream.close();
-			fileInputStream.close();
-			return objectList;
+			Cipher mCipher = Cipher.getInstance("AES");
+			SecretKeySpec mSecretKeySpec = new SecretKeySpec(key.getBytes(), "AES");
+			mCipher.init(Cipher.DECRYPT_MODE, mSecretKeySpec);
+			return new String(mCipher.doFinal(Base64Decode(str)));
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return "";
+	}
+
+	private String Base64Encode(byte[] dataBytes) {
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(dataBytes);
+	}
+
+	private byte[] Base64Decode(String data) {
+		Base64.Decoder decoder = Base64.getDecoder();
+		return decoder.decode(data);
 	}
 }

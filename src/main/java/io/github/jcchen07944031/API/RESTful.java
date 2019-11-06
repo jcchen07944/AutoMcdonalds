@@ -26,11 +26,14 @@ public class RESTful {
 	@POST
 	@Path("/register")
 	public boolean register(String message) {
+		Database database = new Database();
 		JSONObject messageJson = new JSONObject(message);
-		Account account = new Account((String)messageJson.get("username"), (String)messageJson.get("password"));
+		Account account = database.findAccountByUsername((String)messageJson.get("username"));
+		if(account == null)
+			account = new Account((String)messageJson.get("username"), (String)messageJson.get("password"));
+		
 		if(account.login()){
 			account.setKeyword((String)messageJson.get("keyword"));
-			Database database = new Database();
 			database.updateAccount(account);
 			return true;
 		}
