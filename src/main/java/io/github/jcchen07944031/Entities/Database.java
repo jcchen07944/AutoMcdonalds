@@ -64,6 +64,16 @@ public class Database {
 		}
 	}
 
+	public void deleteAccount(Account account) {
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String sql = "DELETE FROM account WHERE username='" + username + "'";
+		try {
+			statement.execute(sql);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	public ArrayList<Account> getAccounts() {
 		ArrayList<Account> accountList = new ArrayList<Account>();
 

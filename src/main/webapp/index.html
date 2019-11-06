@@ -51,11 +51,19 @@
 					<div class="am-wrap-input validate-input">
 						<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword">
 					</div>
-					<div id="am-register-enter" class="am-wrap-button">
-						<button class="am-button" @click="submit">
-							確認
-						</button>
+					<div class="am-wrap-button">
+						<div id="am-button-register">
+							<button class="am-button" @click="btn_register">
+								確認
+							</button>
+						</div>
+						<div id="am-button-cancel">
+							<button class="am-button" @click="dialog_cancel = true">
+								取消
+							</button>
+						</div>
 					</div>
+						
 				</div>
 				<v-dialog v-model="dialog_success" max-width="290">
 					<v-card>
@@ -70,10 +78,41 @@
 				<v-dialog v-model="dialog_fail" max-width="290">
 					<v-card>
 						<v-card-title>登記失敗</v-card-title>
-						<v-card-text>請確認帳號(手機)及密碼</v-card-text>
+						<v-card-text>請確認帳號(手機)及密碼或稍後再試</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-btn color="#228896" text @click="dialog_fail = false">確認</v-btn>
+						</v-card-actions>
+					</v-card>						
+				</v-dialog>
+				<v-dialog v-model="dialog_cancel" max-width="290">
+					<v-card>
+						<v-card-title>是否刪除帳號</v-card-title>
+						<v-card-text></v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="#228896" text @click="do_cancel">確認</v-btn>
+							<v-btn color="#228896" text @click="dialog_cancel = false">取消</v-btn>
+						</v-card-actions>
+					</v-card>						
+				</v-dialog>
+				<v-dialog v-model="dialog_cancel_success" max-width="290">
+					<v-card>
+						<v-card-title>刪除成功</v-card-title>
+						<v-card-text></v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="#228896" text @click="dialog_cancel_success = false">確認</v-btn>
+						</v-card-actions>
+					</v-card>						
+				</v-dialog>
+				<v-dialog v-model="dialog_cancel_fail" max-width="290">
+					<v-card>
+						<v-card-title>刪除失敗</v-card-title>
+						<v-card-text>請確認帳號(手機)或稍後再試</v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="#228896" text @click="dialog_cancel_fail = false">確認</v-btn>
 						</v-card-actions>
 					</v-card>						
 				</v-dialog>
@@ -91,9 +130,12 @@
 				keyword:'',
 				dialog_success:false,
 				dialog_fail:false,
+				dialog_cancel:false,
+				dialog_cancel_success:false,
+				dialog_cancel_fail:false,
 			},
 			methods: {
-				submit() {
+				btn_register() {
 					axios.post('/AutoMcdonalds/api/register', {
 						username: register.username, 
 						password: register.password,
@@ -116,7 +158,31 @@
 					.catch(function (error) {
 						console.log(error);
 					});
-				}				
+				},
+				do_cancel() {
+					axios.post('/AutoMcdonalds/api/cancel', {
+						username: register.username
+					})
+					.then(function (response) {
+						register.dialog_cancel = false;
+						console.log(response);
+						if(response.data) {
+							register.dialog_cancel_success = true;
+							register.username = '';
+							register.password = '';
+							register.keyword = '';
+						}
+						else {
+							register.dialog_cancel_fail = true;
+							register.password = '';
+							register.keyword = '';
+						}
+					})
+					.catch(function (error) {
+						register.dialog_cancel = false;
+						console.log(error);
+					});
+				}
 			}
 		});
 	</script>

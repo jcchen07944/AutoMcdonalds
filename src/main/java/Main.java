@@ -12,7 +12,7 @@ public class Main {
 
 	public static void main(String[] argv) {
 		Database database = new Database();
-		//database.updateAccount(new Account("0902389735", "jack841008"));
+		//database.deleteAccount(new Account("0902389735", "jack841008"));
 		ArrayList<Account> accountList = database.getAccounts();
 		for(int i = 0; i < accountList.size(); i++) {
 			Account account = accountList.get(i);

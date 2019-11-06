@@ -39,4 +39,17 @@ public class RESTful {
 		}
 		return false;
 	}
+
+	@POST
+	@Path("/cancel")
+	public boolean cancel(String message) {
+		Database database = new Database();
+		JSONObject messageJson = new JSONObject(message);
+		Account account = database.findAccountByUsername((String)messageJson.get("username"));
+		if(account == null)
+			return false;
+
+		database.deleteAccount(account);
+		return true;
+	}
 }
