@@ -49,7 +49,6 @@ public class HttpClient {
 			Response response = client.newCall(request).execute();
 			if(!response.headers("Set-Cookie").isEmpty())
 				cookie = response.headers("Set-Cookie").get(0).split(";")[0];
-			System.out.println(cookie);
 			return response.body().string();
 		} catch(Exception ex) {
 			ex.printStackTrace();

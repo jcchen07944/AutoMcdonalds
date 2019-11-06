@@ -8,6 +8,8 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.util.Base64;
 import java.math.BigInteger;
 
+import io.github.jcchen07944031.Entities.Constants;
+
 public class Encrypt {
 
 	public static String encode(Object nullObj, String data) {
@@ -18,7 +20,7 @@ public class Encrypt {
 			return "";
 		}
 
-		byte[] dataBytes = DESEncrypt(dataMD5, "", "");
+		byte[] dataBytes = DESEncrypt(dataMD5, Constants.MCDDAILY_DES_KEY, Constants.MCDDAILY_DES_IV);
 		if(dataBytes == null) {
 			return "";
 		}

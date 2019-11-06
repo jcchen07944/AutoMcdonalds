@@ -15,29 +15,21 @@ public class Account {
 	private String accessToken;
 	private String keyword;
 
-<<<<<<< HEAD
-=======
 	public Account() {
 		this.httpClient = new HttpClient();
 		this.username = "";
 		this.password = "";
 		this.accessToken = "";
+		this.keyword = "";
 	}
-
-<<<<<<< HEAD
->>>>>>> 909c112... Register post test ok.
-	public Account(String account, String password) {
-=======
 	public Account(String username, String password) {
->>>>>>> 7e8ee15... Modify confusing variable name.
 		this.httpClient = new HttpClient();
 		this.username = username;
 		this.password = password;
 		this.accessToken = "";
+		this.keyword = "";
 	}
 
-<<<<<<< HEAD
-=======
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -58,16 +50,10 @@ public class Account {
 		this.accessToken = accessToken;
 	}
 
->>>>>>> 7e8ee15... Modify confusing variable name.
 	public String getAccessToken() {
 		return accessToken;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public String login() {
-=======
-=======
 	public void setKeyword(String keyword)  {
 		this.keyword = keyword;
 	}
@@ -76,12 +62,10 @@ public class Account {
 		return keyword;
 	}
 
->>>>>>> 285278d... Finish database.
 	public boolean login() {
 		if(verifyAccessToken())
 			return true;
 
->>>>>>> 4655834... Adjust login function.
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_LOGIN);
 		postContent.setUsername(username);
 		postContent.setPassword(password);
@@ -95,21 +79,13 @@ public class Account {
 								.getJSONObject("results")
 								.getJSONObject("member_info")
 								.get("access_token");
-<<<<<<< HEAD
-					System.out.println(accessToken);
-=======
 					return true;
->>>>>>> 4655834... Adjust login function.
 				}
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-<<<<<<< HEAD
-		return "";
-=======
 		return false;
->>>>>>> 4655834... Adjust login function.
 	}
 
 	public String logout() {
