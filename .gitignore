@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 Constants.java
-encrypter/.classpath
-encrypter/.project
-encrypter/.settings/org.eclipse.jdt.core.prefs
-=======
-Backend/bin/
-Backend/.classpath
-Backend/.project
-Backend/.settings/org.eclipse.jdt.core.prefs
-<<<<<<< HEAD
->>>>>>> 5407a3d... Rename folder.
-=======
-Backend/build/
-Backend/.gradle/
-=======
 bin/
 .gradle/
->>>>>>> c2aac7f... Using Tomcat to deploy website.
-Constants.java
->>>>>>> 6740c3e... Using gradle.
