@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<link href="css/vuetify.min.css" rel="stylesheet">
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
@@ -37,7 +37,7 @@
 			</div>
 		</aside>
 		<div id="am-content" class="js-fullheight" style="background-image: url(images/img_bg_3.jpg);background-size: cover;">
-			<div id="am-register" class="am-content-block">
+			<div id="am-register" class="am-content-block" data-app="true">
 				<div id="am-register-form">
 					<div>
 						<span id="am-register-title">登記</span>
@@ -56,30 +56,41 @@
 							確認
 						</button>
 					</div>
-					<v-dialog v-model="dialog" max-width="290">
-						<v-card>
-							<v-card-title>Title</v-card-title>
-							<v-card-text>text</v-card-text>
-							<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn color="#228896" text @click="dialog = false">確認</v-btn>
-							</v-card-actions>
-						</v-card>						
-					</v-dialog>
 				</div>
+				<v-dialog v-model="dialog_success" max-width="290">
+					<v-card>
+						<v-card-title>登記成功</v-card-title>
+						<v-card-text></v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="#228896" text @click="dialog_success = false">確認</v-btn>
+						</v-card-actions>
+					</v-card>						
+				</v-dialog>
+				<v-dialog v-model="dialog_fail" max-width="290">
+					<v-card>
+						<v-card-title>登記失敗</v-card-title>
+						<v-card-text>請確認帳號(手機)及密碼</v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="#228896" text @click="dialog_fail = false">確認</v-btn>
+						</v-card-actions>
+					</v-card>						
+				</v-dialog>
 			</div>
 		</div>
 	</div>
 	
 	<script>
 		var register = new Vue({
-			el:'#am-register-form',
+			el:'#am-register',
 			vuetify: new Vuetify(),
 			data:{
 				username:'',
 				password:'',
 				keyword:'',
-				dialog: false
+				dialog_success:false,
+				dialog_fail:false,
 			},
 			methods: {
 				submit() {
@@ -90,19 +101,19 @@
 					})
 					.then(function (response) {
 						console.log(response);
-						register.dialog = true;
 						if(response.data) {
+							register.dialog_success = true;
 							register.username = '';
 							register.password = '';
 							register.keyword = '';
 						}
 						else {
+							register.dialog_fail = true;
 							register.password = '';
 							register.keyword = '';
 						}
 					})
 					.catch(function (error) {
-						register.dialog = true;
 						console.log(error);
 					});
 				}				

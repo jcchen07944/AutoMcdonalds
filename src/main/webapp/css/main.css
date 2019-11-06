@@ -184,16 +184,23 @@
   -o-transition: 0.5s;
   transition: 0.5s;
   overflow-y: scroll;
+  position:relative;
 }
+
 @media screen and (max-width: 1200px) {
   #am-content {
     width: 70%;
   }
 }
+
 @media screen and (max-width: 768px) {
   #am-content {
     width: 100%;
   }
+}
+
+.v-dialog {
+  position:absolute;
 }
 
 .am-content-block {
@@ -207,6 +214,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 #am-register-form {
 	width: 300px;
