@@ -8,6 +8,13 @@
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/main.js"></script>
 </head>
 <body>
 	<div id="am-page">
@@ -38,54 +45,69 @@
 					<div class="am-wrap-input validate-input" data-validate = "Username is required">
 						<input class="am-input" type="text" name="username" placeholder="Username" v-model="username">
 					</div>
-					
 					<div class="am-wrap-input validate-input" data-validate = "Password is required">
 						<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password">
 					</div>
-					
 					<div class="am-wrap-input validate-input">
-						<input class="am-input" type="text" name="index" placeholder="Index" v-model="index">
+						<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword">
 					</div>
-					
 					<div id="am-register-enter" class="am-wrap-button">
 						<button class="am-button" @click="submit">
 							確認
 						</button>
 					</div>
+					<v-dialog v-model="dialog" max-width="290">
+						<v-card>
+							<v-card-title>Title</v-card-title>
+							<v-card-text>text</v-card-text>
+							<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn color="#228896" text @click="dialog = false">確認</v-btn>
+							</v-card-actions>
+						</v-card>						
+					</v-dialog>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/main.js"></script>
-	
 	<script>
-            var register = new Vue({
-                el:'#am-register-form',
-                data:{
-                    username:'',
-                    password:'',
-                    index:''
-                },
-                methods: {
-                    submit() {
-			axios.post('/AutoMcdonalds/api/register', {
-				username: this.username, 
-				password: this.password,
-				index: this.index
-			})
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-                    }                
-                }
-            });
-        </script>
+		var register = new Vue({
+			el:'#am-register-form',
+			vuetify: new Vuetify(),
+			data:{
+				username:'',
+				password:'',
+				keyword:'',
+				dialog: false
+			},
+			methods: {
+				submit() {
+					axios.post('/AutoMcdonalds/api/register', {
+						username: register.username, 
+						password: register.password,
+						keyword: register.keyword
+					})
+					.then(function (response) {
+						console.log(response);
+						register.dialog = true;
+						if(response.data) {
+							register.username = '';
+							register.password = '';
+							register.keyword = '';
+						}
+						else {
+							register.password = '';
+							register.keyword = '';
+						}
+					})
+					.catch(function (error) {
+						register.dialog = true;
+						console.log(error);
+					});
+				}				
+			}
+		});
+	</script>
 </body>
 </html>

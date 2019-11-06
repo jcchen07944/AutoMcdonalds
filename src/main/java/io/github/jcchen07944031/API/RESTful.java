@@ -25,14 +25,15 @@ public class RESTful {
 
 	@POST
 	@Path("/register")
-	public String register(String message) {
+	public boolean register(String message) {
 		JSONObject messageJson = new JSONObject(message);
 		Account account = new Account((String)messageJson.get("username"), (String)messageJson.get("password"));
 		if(account.login()){
+			account.setKeyword((String)messageJson.get("keyword"));
 			Database database = new Database();
 			database.updateAccount(account);
-			return "Add ok";
+			return true;
 		}
-		return "Add failed";
+		return false;
 	}
 }

@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 
 public class Database {
 	
-	private String databaseRootDir = "/opt/tomcat/latest/webapps/database";
+	//private String databaseRootDir = "/opt/tomcat/latest/webapps/database";
 	private String mysqlUrl = "jdbc:mysql://127.0.0.1:3306/AutoMcdonalds?user=" + Constants.MYSQL_USERNAME + "&password=" + Constants.MYSQL_PASSWORD;
 
 	private Connection connection;
@@ -35,6 +35,7 @@ public class Database {
 
 	public Database() {
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection(mysqlUrl);
 			statement = connection.createStatement();
 		} catch(Exception ex) {
@@ -75,8 +76,8 @@ public class Database {
 
 	public void updateAccount(Account account) {
 		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
-				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '') " + 
-				"ON DUPLICATE KEY UPDATE password = '" + account.getPassword() + "', access_token = '" + account.getAccessToken() + "', keyword = ''";
+				"VALUES ('" + account.getUsername() + "', '" + account.getPassword() + "', '" + account.getAccessToken() + "', '" + account.getKeyword() + "') " + 
+				"ON DUPLICATE KEY UPDATE password = '" + account.getPassword() + "', access_token = '" + account.getAccessToken() + "', keyword = '" + account.getKeyword() + "'";
 
 		try {
 			statement.execute(sql);
@@ -101,7 +102,21 @@ public class Database {
 	public ArrayList<Account> getAccounts() {
 		ArrayList<Account> accountList = new ArrayList<Account>();
 
-		File database = new File(databaseRootDir);
+		String sql = "SELECT * FROM account";
+		try {
+			resultSet = statement.executeQuery(sql);
+			while(resultSet.next()) {
+				Account account = new Account();
+				account.setUsername(resultSet.getString("username"));
+				account.setPassword(resultSet.getString("password"));
+				account.setAccessToken(resultSet.getString("access_token"));
+				account.setKeyword(resultSet.getString("keyword"));
+				accountList.add(account);
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		/*File database = new File(databaseRootDir);
 		for(File files : database.listFiles()) {
 			if(files.isDirectory()) {
 				try {
@@ -114,7 +129,7 @@ public class Database {
 					ex.printStackTrace();
 				}
 			}
-		}
+		}*/
 
 		return accountList;
 	}

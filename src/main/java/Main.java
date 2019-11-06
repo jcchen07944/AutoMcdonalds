@@ -30,14 +30,14 @@ public class Main {
 
 >>>>>>> af1535a... Testing mysql.
 		Database database = new Database();
-		database.updateAccount(new Account("", ""));
-		/*
+		//database.updateAccount(new Account("0902389735", "jack841008"));
 		ArrayList<Account> accountList = database.getAccounts();
 		for(int i = 0; i < accountList.size(); i++) {
 			Account account = accountList.get(i);
-			account.login();
-			database.updateAccount(account);
+			if(account.login()) {
+				database.updateAccount(account);
 
+<<<<<<< HEAD
 			Coupon coupon = new Coupon(account);
 			coupon.getLottery();
 <<<<<<< HEAD:Backend/src/Main.java
@@ -46,6 +46,12 @@ public class Main {
 =======
 		}*/
 >>>>>>> 6740c3e... Using gradle.:Backend/src/main/java/Main.java
+=======
+				Coupon coupon = new Coupon(account);
+				coupon.getLottery();
+			}
+		}
+>>>>>>> 285278d... Finish database.
 	}
 
 	

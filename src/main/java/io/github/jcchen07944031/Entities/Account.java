@@ -13,6 +13,7 @@ public class Account {
 	private String username;
 	private String password;
 	private String accessToken;
+	private String keyword;
 
 <<<<<<< HEAD
 =======
@@ -63,8 +64,19 @@ public class Account {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public String login() {
 =======
+=======
+	public void setKeyword(String keyword)  {
+		this.keyword = keyword;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+>>>>>>> 285278d... Finish database.
 	public boolean login() {
 		if(verifyAccessToken())
 			return true;
