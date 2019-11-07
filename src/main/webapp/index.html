@@ -19,13 +19,13 @@
 <body>
 	<div id="am-page">
 		<aside id="am-aside" class="border js-fullheight">
-			<h1 id="am-logo"><a href="index.html">Auto<br>Mcdonalds</a></h1>
+			<h1 id="am-logo">Auto<br>Mcdonalds</h1>
 			<nav id="am-menu">
 				<ul>
-					<li><a href="#">Home</a></li>
-					<li class="am-active"><a href="#">Register</a></li>
-					<li><a href="#">History</a></li>
-					<li><a href="#">About</a></li>
+					<li v-bind:class="[active == 'home'? 'am-active':'']"><a href="#Home" @click="changeView('home-component')">Home</a></li>
+					<li v-bind:class="[active == 'register'? 'am-active':'']"><a href="#Register" @click="changeView('register-component')">Register</a></li>
+					<li v-bind:class="[active == 'history'? 'am-active':'']"><a href="#History" @click="changeView('history-component')">History</a></li>
+					<li v-bind:class="[active == 'about'? 'am-active':'']"><a href="#About" @click="changeView('about-component')">About</a></li>
 				</ul>
 			</nav>
 			
@@ -37,150 +37,195 @@
 			</div>
 		</aside>
 		<div id="am-content" class="js-fullheight" style="background-image: url(images/img_bg_3.jpg);background-size: cover;">
-			<div id="am-register" class="am-content-block" data-app="true">
-				<div id="am-register-form">
-					<div>
-						<span id="am-register-title">登記</span>
-					</div>
-					<div class="am-wrap-input validate-input" data-validate = "Username is required">
-						<input class="am-input" type="text" name="username" placeholder="Username" v-model="username">
-					</div>
-					<div class="am-wrap-input validate-input" data-validate = "Password is required">
-						<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password">
-					</div>
-					<div class="am-wrap-input validate-input">
-						<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword">
-					</div>
-					<div class="am-wrap-button">
-						<div id="am-button-register">
-							<button class="am-button" @click="btn_register">
-								確認
-							</button>
-						</div>
-						<div id="am-button-cancel">
-							<button class="am-button" @click="dialog_cancel = true">
-								取消
-							</button>
-						</div>
-					</div>
-						
-				</div>
-				<v-dialog v-model="dialog_success" max-width="290">
-					<v-card>
-						<v-card-title>登記成功</v-card-title>
-						<v-card-text></v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="#228896" text @click="dialog_success = false">確認</v-btn>
-						</v-card-actions>
-					</v-card>						
-				</v-dialog>
-				<v-dialog v-model="dialog_fail" max-width="290">
-					<v-card>
-						<v-card-title>登記失敗</v-card-title>
-						<v-card-text>請確認帳號(手機)及密碼或稍後再試</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="#228896" text @click="dialog_fail = false">確認</v-btn>
-						</v-card-actions>
-					</v-card>						
-				</v-dialog>
-				<v-dialog v-model="dialog_cancel" max-width="290">
-					<v-card>
-						<v-card-title>是否刪除帳號</v-card-title>
-						<v-card-text></v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="#228896" text @click="do_cancel">確認</v-btn>
-							<v-btn color="#228896" text @click="dialog_cancel = false">取消</v-btn>
-						</v-card-actions>
-					</v-card>						
-				</v-dialog>
-				<v-dialog v-model="dialog_cancel_success" max-width="290">
-					<v-card>
-						<v-card-title>刪除成功</v-card-title>
-						<v-card-text></v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="#228896" text @click="dialog_cancel_success = false">確認</v-btn>
-						</v-card-actions>
-					</v-card>						
-				</v-dialog>
-				<v-dialog v-model="dialog_cancel_fail" max-width="290">
-					<v-card>
-						<v-card-title>刪除失敗</v-card-title>
-						<v-card-text>請確認帳號(手機)或稍後再試</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="#228896" text @click="dialog_cancel_fail = false">確認</v-btn>
-						</v-card-actions>
-					</v-card>						
-				</v-dialog>
-			</div>
+			<transition mode="out-in">
+				<keep-alive>
+					<component :is="view"></component>
+				</keep-alive>
+			</transition>
 		</div>
 	</div>
 	
 	<script>
-		var register = new Vue({
-			el:'#am-register',
-			vuetify: new Vuetify(),
-			data:{
-				username:'',
-				password:'',
-				keyword:'',
-				dialog_success:false,
-				dialog_fail:false,
-				dialog_cancel:false,
-				dialog_cancel_success:false,
-				dialog_cancel_fail:false,
+		var vm = new Vue({
+			el:'#am-page',
+			data: {
+				view: 'register-component',
+				active: 'register'
 			},
 			methods: {
-				btn_register() {
-					axios.post('/AutoMcdonalds/api/register', {
-						username: register.username, 
-						password: register.password,
-						keyword: register.keyword
-					})
-					.then(function (response) {
-						console.log(response);
-						if(response.data) {
-							register.dialog_success = true;
-							register.username = '';
-							register.password = '';
-							register.keyword = '';
-						}
-						else {
-							register.dialog_fail = true;
-							register.password = '';
-						}
-					})
-					.catch(function (error) {
-						console.log(error);
-					});
+				changeView: function(currentView) {
+					if(currentView != this.view) {
+						this.view = currentView;
+						this.active = currentView.split('-')[0];
+					}
+				}
+			},
+			components: {
+				'home-component': {
+					template: `
+						<div id="am-home" class="am-content-block" data-app="true">
+							HOME
+						</div>`
 				},
-				do_cancel() {
-					axios.post('/AutoMcdonalds/api/cancel', {
-						username: register.username
-					})
-					.then(function (response) {
-						register.dialog_cancel = false;
-						console.log(response);
-						if(response.data) {
-							register.dialog_cancel_success = true;
-							register.username = '';
-							register.password = '';
-							register.keyword = '';
+				'register-component': {
+					vuetify: new Vuetify(),
+					register: this,
+					data: function(){
+						return {
+							username:'',
+							password:'',
+							keyword:'',
+							dialog_success:false,
+							dialog_fail:false,
+							dialog_cancel:false,
+							dialog_cancel_success:false,
+							dialog_cancel_fail:false,
 						}
-						else {
-							register.dialog_cancel_fail = true;
-							register.password = '';
-							register.keyword = '';
+					},
+					methods: {
+						btn_register: function() {
+							let register = this;
+							axios.post('/AutoMcdonalds/api/register', {
+								username: register.username, 
+								password: register.password,
+								keyword: register.keyword
+							})
+							.then(function (response) {
+								console.log(response);
+								if(response.data) {
+									register.dialog_success = true;
+									register.username = '';
+									register.password = '';
+									register.keyword = '';
+								}
+								else {
+									register.dialog_fail = true;
+									register.password = '';
+								}
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+						},
+						do_cancel: function() {
+							let register = this;
+							axios.post('/AutoMcdonalds/api/cancel', {
+								username: register.username
+							})
+							.then(function (response) {
+								register.dialog_cancel = false;
+								console.log(response);
+								if(response.data) {
+									register.dialog_cancel_success = true;
+									register.username = '';
+									register.password = '';
+									register.keyword = '';
+								}
+								else {
+									register.dialog_cancel_fail = true;
+									register.password = '';
+									register.keyword = '';
+								}
+							})
+							.catch(function (error) {
+								register.dialog_cancel = false;
+								console.log(error);
+							});
 						}
-					})
-					.catch(function (error) {
-						register.dialog_cancel = false;
-						console.log(error);
-					});
+					},
+					template: `
+						<div id="am-register" class="am-content-block" data-app="true">
+							<div id="am-register-form">
+								<div>
+									<span id="am-register-title">登記</span>
+								</div>
+								<div class="am-wrap-input validate-input" data-validate = "Username is required">
+									<input class="am-input" type="text" name="username" placeholder="Username" v-model="username">
+								</div>
+								<div class="am-wrap-input validate-input" data-validate = "Password is required">
+									<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password">
+								</div>
+								<div class="am-wrap-input validate-input">
+									<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword">
+								</div>
+								<div class="am-wrap-button">
+									<div id="am-button-register">
+										<button class="am-button" @click="btn_register">
+											確認
+										</button>
+									</div>
+									<div id="am-button-cancel">
+										<button class="am-button" @click="dialog_cancel = true">
+											取消
+										</button>
+									</div>
+								</div>
+									
+							</div>
+							<v-dialog v-model="dialog_success" max-width="290">
+								<v-card>
+									<v-card-title>登記成功</v-card-title>
+									<v-card-text></v-card-text>
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="dialog_success = false">確認</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
+							<v-dialog v-model="dialog_fail" max-width="290">
+								<v-card>
+									<v-card-title>登記失敗</v-card-title>
+									<v-card-text>請確認帳號(手機)及密碼或稍後再試</v-card-text>
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="dialog_fail = false">確認</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
+							<v-dialog v-model="dialog_cancel" max-width="290">
+								<v-card>
+									<v-card-title>是否刪除帳號</v-card-title>
+									<v-card-text></v-card-text>
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="do_cancel">確認</v-btn>
+										<v-btn color="#228896" text @click="dialog_cancel = false">取消</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
+							<v-dialog v-model="dialog_cancel_success" max-width="290">
+								<v-card>
+									<v-card-title>刪除成功</v-card-title>
+									<v-card-text></v-card-text>
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="dialog_cancel_success = false">確認</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
+							<v-dialog v-model="dialog_cancel_fail" max-width="290">
+								<v-card>
+									<v-card-title>刪除失敗</v-card-title>
+									<v-card-text>請確認帳號(手機)或稍後再試</v-card-text>
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="dialog_cancel_fail = false">確認</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
+						</div>`
+				},
+				'history-component': {
+					template: `
+						<div id="am-history" class="am-content-block" data-app="true">
+							HISTORY
+						</div>`
+				},
+				'about-component': {
+					template: `
+						<div id="am-about" class="am-content-block" data-app="true">
+							ABOUT
+						</div>`
 				}
 			}
 		});
