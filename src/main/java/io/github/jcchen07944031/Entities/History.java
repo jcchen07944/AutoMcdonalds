@@ -1,33 +1,43 @@
 package io.github.jcchen07944031.Entities;
 
-import java.io.Serializable;
-
-public class History implements Serializable {
+public class History {
 	
-	private String couponID;
-	private String redeemEndDateTime;
+	private String ID;
+	private String objectID;
+	private String endDateTime;
 	private String title;
 	private String imgUrl;
 	private String type;
+	private String status;
+
+	private String timeStamp;
 
 	public History() {
 		
 	}
 
-	public void setCouponID(String couponID) {
-		this.couponID = couponID;
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 
-	public String getCouponID() {
-		return couponID;
+	public String getID() {
+		return ID;
 	}
 
-	public void setRedeemEndDateTime(String redeemEndDateTime) {
-		this.redeemEndDateTime = redeemEndDateTime;
+	public void setObjectID(String objectID) {
+		this.objectID = objectID;
 	}
 
-	public String getRedeemEndDateTime() {
-		return redeemEndDateTime;
+	public String getObjectID() {
+		return objectID;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
 	}
 
 	public void setTitle(String title) {
@@ -46,11 +56,26 @@ public class History implements Serializable {
 		return imgUrl;
 	}
 
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
 	public void setType(String type) {
 		this.type = type;
 	}
 
 	public String getType() {
 		return type;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatus() {
+		return status;
 	}
 }

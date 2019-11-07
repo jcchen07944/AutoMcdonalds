@@ -30,7 +30,7 @@ import java.util.Base64;
 
 public class Database {
 	
-	private String mysqlUrl = "jdbc:mysql://127.0.0.1:3306/AutoMcdonalds?user=" + Constants.MYSQL_USERNAME + "&password=" + Constants.MYSQL_PASSWORD;
+	private String mysqlUrl = "jdbc:mysql://127.0.0.1:3306/AutoMcdonalds?user=" + Constants.MYSQL_USERNAME + "&password=" + Constants.MYSQL_PASSWORD + "&characterEncoding=utf-8";
 
 	private Connection connection;
 	private Statement statement;
@@ -62,6 +62,33 @@ public class Database {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public void saveHistory(Account account, History history) {
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String sqlCreate = "CREATE TABLE IF NOT EXISTS `" + username + "` (" +
+				"`id` VARCHAR(15), " + 
+				"`object_id` VARCHAR(15), " +
+				"`type` VARCHAR(50), " +
+				"`title` VARCHAR(100), " +
+				"`image_url` VARCHAR(100), " +
+				"`end_datetime` VARCHAR(50), " +
+				"`status` VARCHAR(15), " +
+				"`time_stamp` TIMESTAMP, " +
+				"PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+		String sqlInsert = "INSERT INTO `" + username + "`(`id`, `object_id`, `type`, `title`, `image_url`, `end_datetime`, `status`) " +
+					"VALUES ('" + history.getID() + "', '" + history.getObjectID() + "', '" + history.getType() + "', '" + 
+						history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
+					"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
+
+		try {
+			statement.execute(sqlCreate);
+			statement.execute(sqlInsert);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		
 	}
 
 	public void deleteAccount(Account account) {

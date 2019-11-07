@@ -1,6 +1,7 @@
 package io.github.jcchen07944031.Entities;
 
 import io.github.jcchen07944031.Entities.Account;
+import io.github.jcchen07944031.Entities.History;
 import io.github.jcchen07944031.API.HttpClient;
 import io.github.jcchen07944031.Entities.PostContent;
 import io.github.jcchen07944031.Entities.McDAPI;
@@ -18,7 +19,7 @@ public class Coupon {
 		this.httpClient = new HttpClient();
 	}
 
-	public int getLottery() {
+	public History getLottery() {
 		/* Get weather */
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_WEATHER_GET);
 		String result = httpClient.post(McDAPI.McD_API_WEATHER_GET, postContent.getJson());
@@ -27,7 +28,7 @@ public class Coupon {
 			if(result != "")  {
 				resultJson = new JSONObject(result);
 				if((int)resultJson.get("rc") != 1) {
-					return -2;
+					return null;
 				}
 			}
 		} catch(Exception ex) {
@@ -43,12 +44,23 @@ public class Coupon {
 				resultJson = new JSONObject(result);
 				if((int)resultJson.get("rc") == 1) {
 					System.out.println(resultJson);
-					return 1;
+					String type = resultJson.getJSONObject("results").keys().next();
+					if((int)resultJson.getJSONObject("results").getJSONObject(type).getJSONObject("object_info").get("object_id") != 2147483647) {
+						History history = new History();
+						history.setObjectID((int)resultJson.getJSONObject("results").getJSONObject(type).getJSONObject("object_info").get("object_id") + "");
+						history.setTitle((String)resultJson.getJSONObject("results").getJSONObject(type).getJSONObject("object_info").get("title"));
+						history.setEndDateTime((String)resultJson.getJSONObject("results").getJSONObject(type).getJSONObject("object_info").get(type.equals("coupon") ? "redeem_end_datetime" : "expire_datetime"));
+						history.setImgUrl((String)resultJson.getJSONObject("results").getJSONObject(type).getJSONObject("object_info").getJSONObject("image").get("url"));
+						history.setID((int)resultJson.getJSONObject("results").getJSONObject(type).get(type + "_id") + "");
+						history.setType(type);
+						history.setStatus((int)resultJson.getJSONObject("results").getJSONObject(type).get("status") + "");
+						return history;
+					}
 				}
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		return -1;
+		return null;
 	}
 }
