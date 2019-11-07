@@ -65,6 +65,8 @@ public class Database {
 	}
 
 	public void saveHistory(Account account, History history) {
+		if(history == null)
+			return;
 		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
 		String sqlCreate = "CREATE TABLE IF NOT EXISTS `" + username + "` (" +
 				"`id` VARCHAR(15), " + 
@@ -93,9 +95,11 @@ public class Database {
 
 	public void deleteAccount(Account account) {
 		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
-		String sql = "DELETE FROM account WHERE username='" + username + "'";
+		String sqlDelete = "DELETE FROM account WHERE username='" + username + "'";
+		String sqlDrop = "DROP TABLE IF EXISTS `" + username + "`";
 		try {
-			statement.execute(sql);
+			statement.execute(sqlDelete);
+			statement.execute(sqlDrop);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
