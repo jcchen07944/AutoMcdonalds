@@ -64,34 +64,6 @@ public class Database {
 		}
 	}
 
-	public void saveHistory(Account account, History history) {
-		if(history == null)
-			return;
-		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
-		String sqlCreate = "CREATE TABLE IF NOT EXISTS `" + username + "` (" +
-				"`id` VARCHAR(15), " + 
-				"`object_id` VARCHAR(15), " +
-				"`type` VARCHAR(50), " +
-				"`title` VARCHAR(100), " +
-				"`image_url` VARCHAR(100), " +
-				"`end_datetime` VARCHAR(50), " +
-				"`status` VARCHAR(15), " +
-				"`time_stamp` TIMESTAMP, " +
-				"PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		String sqlInsert = "INSERT INTO `" + username + "`(`id`, `object_id`, `type`, `title`, `image_url`, `end_datetime`, `status`) " +
-					"VALUES ('" + history.getID() + "', '" + history.getObjectID() + "', '" + history.getType() + "', '" + 
-						history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
-					"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
-
-		try {
-			statement.execute(sqlCreate);
-			statement.execute(sqlInsert);
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-
-		
-	}
 
 	public void deleteAccount(Account account) {
 		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
@@ -145,14 +117,79 @@ public class Database {
 		return null;
 	}
 
-	public void addHistory(Account account, History history) {
+	public ArrayList<Account> findAccountByKeyword(String keyword) {
+		keyword = AESEncrypt(keyword, Constants.DATABASE_KEYWORD_AES_KEY);
+		String sql = "SELECT * FROM account WHERE keyword='" + keyword + "'";
 		
+		try {
+			resultSet = statement.executeQuery(sql);
+			ArrayList<Account> accountList = new ArrayList<Account>();
+			while(resultSet.next()) {
+				Account account = new Account();
+				account.setUsername(AESDecrypt(resultSet.getString("username"), Constants.DATABASE_USERNAME_AES_KEY));
+				account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
+				account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
+				account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
+				accountList.add(account);
+			}
+			return accountList;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	public void saveHistory(Account account, History history) {
+		if(history == null)
+			return;
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String sqlCreate = "CREATE TABLE IF NOT EXISTS `" + username + "` (" +
+				"`id` VARCHAR(15), " + 
+				"`object_id` VARCHAR(15), " +
+				"`type` VARCHAR(50), " +
+				"`title` VARCHAR(100), " +
+				"`image_url` VARCHAR(100), " +
+				"`end_datetime` VARCHAR(50), " +
+				"`status` VARCHAR(15), " +
+				"`time_stamp` TIMESTAMP, " +
+				"PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+		String sqlInsert = "INSERT INTO `" + username + "`(`id`, `object_id`, `type`, `title`, `image_url`, `end_datetime`, `status`) " +
+					"VALUES ('" + history.getID() + "', '" + history.getObjectID() + "', '" + history.getType() + "', '" + 
+						history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
+					"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
+
+		try {
+			statement.execute(sqlCreate);
+			statement.execute(sqlInsert);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public ArrayList<History> getHistory(Account account) {
 		ArrayList<History> historyList = new ArrayList<History>();
-		
-		return historyList;
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String sql = "SELECT * FROM `" + username + "`";
+		try {
+			resultSet = statement.executeQuery(sql);
+			while(resultSet.next()) {
+				History history = new History();
+				history.setID(resultSet.getString("id"));
+				history.setObjectID(resultSet.getString("object_id"));
+				history.setType(resultSet.getString("type"));
+				history.setTitle(resultSet.getString("title"));
+				history.setImgUrl(resultSet.getString("image_url"));
+				history.setEndDateTime(resultSet.getString("end_datetime"));
+				history.setStatus(resultSet.getString("status"));
+				history.setTimeStamp(resultSet.getString("time_stamp"));
+				historyList.add(history);
+			}
+			return historyList;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 	
 	private String AESEncrypt(String str, String key) {

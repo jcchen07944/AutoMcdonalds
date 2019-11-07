@@ -78,4 +78,10 @@ public class History {
 	public String getStatus() {
 		return status;
 	}
+
+	public String getJson() {
+		return "{" + "\"ID\": \"" + this.ID + "\"," + "\"object_id\": \"" + this.objectID + "\"," + "\"end_datetime\": \"" + this.endDateTime + "\"," + 
+			"\"title\": \"" + this.title + "\"," + "\"image_url\": \"" + this.imgUrl + "\"," + "\"type\": \"" + this.type + "\"," + "\"status\": \"" + this.status + "\"," + 
+			"\"time_stamp\": \"" + this.timeStamp + "\"}";
+	}
 }
