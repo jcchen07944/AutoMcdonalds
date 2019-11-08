@@ -309,9 +309,8 @@ iframe {
 }
 
 .am-wrap-button {
-  width: 100%;
+  width: 200px;
   text-align: center;
-  display: block ruby;
 }
 
 #am-button-register {
@@ -330,11 +329,12 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 0 10px;
-  width: 30%;
+  width: 90px;
   height: 33px;
   background-color: #228896;
   border-radius: 3px;
   margin-right: 10px;
+  float: left;
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -358,11 +358,12 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 0 10px;
-  width: 30%;
+  width: 90px;
   height: 33px;
   background-color: #d5555b;
   border-radius: 3px;
   margin-left: 10px;
+  float: left;
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
