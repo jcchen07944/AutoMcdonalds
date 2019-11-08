@@ -395,3 +395,10 @@ body.offcanvas #am-aside {
   z-index: 999;
   position: fixed;
 }
+
+.v-leave { opacity: 1; }
+.v-leave-active { transition: opacity 0.2s }
+.v-leave-to { opacity: 0; }
+.v-enter { opacity: 0; }
+.v-enter-active  { transition: opacity 0.2s }
+.v-enter-to { opacity: 1; }
