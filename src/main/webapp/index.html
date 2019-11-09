@@ -8,13 +8,15 @@
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
 	<link href="css/vuetify.min.css" rel="stylesheet">
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/perfect-scrollbar.min.js"></script>
 </head>
 <body>
 	<div id="am-page">
@@ -44,7 +46,7 @@
 			</transition>
 		</div>
 	</div>
-	
+
 	<script>
 		var vm = new Vue({
 			el:'#am-page',
@@ -216,9 +218,104 @@
 						</div>`
 				},
 				'history-component': {
+					data: function() {
+						return {
+							rows: [{"ID": "1084495794","object_id": "302","end_datetime": "2019/11/09 23:59:59","title": "買任一超值全餐送蘋果派_G181","image_url": "https://mcdapp1.azureedge.net/P_G181.jpg","type": "coupon","status": "1","time_stamp": "2019-11-08 05:23:19"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:40"},{"ID": "519452120","object_id": "18","end_datetime": "2019/12/31 23:59:59","title": "歡樂貼 (0)","image_url": "https://mcdapp1.azureedge.net/sticker_01.png","type": "sticker","status": "1","time_stamp": "2019-11-08 05:23:41"}],
+							usernames: [{"username": "0981393690"}, {"username": "0902389735"}]
+
+
+						}
+					},
+					mounted() {
+						$('.js-pscroll').each(function(){
+							var ps = new PerfectScrollbar(this);
+
+							$(window).on('resize', function(){
+								ps.update();
+							})
+						});
+					},
+					computed: {
+						"columnsKey": function columns() {
+							if(this.rows.length == 0) {
+								return [];
+							}
+							return {
+								key1: 'title',
+								key2: 'end_datetime',
+								key3: 'type',
+								key4: 'time_stamp'
+							};
+						},
+						"columnsName": function columns() {
+							if(this.rows.length == 0) {
+								return [];
+							}
+							return {
+								key1: '品名',
+								key2: '結束日期',
+								key3: '種類',
+								key4: '領取時間'
+							};
+						},
+						"optionUsername": function usernames() {
+							if(this.username.length == 0) {
+								return [];
+							}
+							return {
+								key1: '0900000000',
+								key2: '0911111111'
+							}
+						}
+					},
 					template: `
-						<div id="am-history" class="am-content-block" data-app="true">
-							HISTORY
+						<div style="height: 100%;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+							<div id="am-history-search">
+								<div style="text-align: center">
+									<div class="am-wrap-input" style="display: inline-block; width: 200px; vertical-align: middle; margin-bottom: 0px;">
+										<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword" style="height: 33px;">
+									</div>
+									<div id="am-button-history" style="display: inline-block; vertical-align: middle;">
+										<button class="am-button" @click="btn_history">
+											確認
+										</button>
+									</div>
+								</div>
+								<div id="am-history-notfound"><span>查無結果</span></div>
+								<div id="am-history-select">
+									<select >
+										<optionv-for="username in usernames">{{username}}</option>
+									</select>
+								</div>
+							</div>
+							<div id="am-history-table" class="am-content-block" data-app="true">
+								<div class="am-table" >
+									<div>
+										<table>
+											<thead>
+												<tr>
+													<th style="width: 300px; text-align: center;">品名</th>
+													<th style="width: 180px; text-align: center;">結束日期</th>
+													<th style="width: 80px; text-align: center;">種類</th>
+													<th style="width: 190px; text-align: center;">領取時間</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+									<div class="js-pscroll" style="max-height: 400px;">
+										<table>
+											<tbody>
+												<tr v-for="row in rows">
+													<td style="width: 300px; text-align: center;">{{row['title']}}</td>
+													<td style="width: 180px; text-align: center;">{{row['end_datetime']}}</td>
+													<td style="width: 80px; text-align: center;">{{row['type']}}</td>
+													<td style="width: 190px; text-align: center;">{{row['time_stamp']}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>`
 				},
 				'about-component': {
@@ -232,3 +329,4 @@
 	</script>
 </body>
 </html>
+
