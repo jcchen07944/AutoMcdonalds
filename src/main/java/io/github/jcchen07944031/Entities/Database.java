@@ -159,9 +159,14 @@ public class Database {
 						history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
 					"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
 
+		String sqlUpdate = "INSERT INTO statistics(`object_id`, `title`, `image_url`, `count`) " +
+					"VALUES ('" + history.getObjectID() + "', '" + history.getTitle() + "', '" + history.getImgUrl() + "', " + 1 + ") " + 
+					"ON DUPLICATE KEY UPDATE image_url = '" + history.getImgUrl() + "', count = count + 1";
+
 		try {
 			statement.execute(sqlCreate);
 			statement.execute(sqlInsert);
+			statement.execute(sqlUpdate);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
