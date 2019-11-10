@@ -17,6 +17,7 @@
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/perfect-scrollbar.min.js"></script>
+	<script src="js/vue-markdown.js"></script>
 </head>
 <body>
 	<div id="am-page">
@@ -87,7 +88,7 @@
 					methods: {
 						btn_register: function() {
 							let register = this;
-							axios.post('/AutoMcdonalds/api/register', {
+							axios.post('/api/register', {
 								username: register.username, 
 								password: register.password,
 								keyword: register.keyword
@@ -111,7 +112,7 @@
 						},
 						do_cancel: function() {
 							let register = this;
-							axios.post('/AutoMcdonalds/api/cancel', {
+							axios.post('/api/cancel', {
 								username: register.username
 							})
 							.then(function (response) {
@@ -187,7 +188,7 @@
 							<v-dialog v-model="dialog_cancel" max-width="290">
 								<v-card>
 									<v-card-title>是否刪除帳號</v-card-title>
-									<v-card-text></v-card-text>
+									<v-card-text>注意！刪除帳號會連同歷史紀錄一同清除！</v-card-text>
 									<v-card-actions>
 										<v-spacer></v-spacer>
 										<v-btn color="#228896" text @click="do_cancel">確認</v-btn>
@@ -231,7 +232,7 @@
 						btn_history: function() {
 							let history = this;
 							history.init = 0;
-							axios.post('/AutoMcdonalds/api/getHistory', {
+							axios.post('/api/getHistory', {
 								keyword: history.keyword
 							})
 							.then(function (response) {
@@ -243,7 +244,7 @@
 									for(let i = 0; i < response.data.length; i++) {
 										history.usernames.push({'text': response.data[i].username, 'value': i});
 										history.rows[i] = [];
-										Vue.set(history.rows, i, response.data[i].history);
+										Vue.set(history.rows, i, response.data[i].history.slice().reverse());
 									}
 									history.keyword = '';
 								}
@@ -339,9 +340,17 @@
 						</div>`
 				},
 				'about-component': {
+					mounted() {
+						Vue.use(VueMarkdown);
+						Vue.component('vue-markdown', VueMarkdown);
+						var vm = new Vue({
+							el: "#am-about"
+						});
+					},
 					template: `
 						<div id="am-about" class="am-content-block" data-app="true">
-							ABOUT
+							<vue-markdown>## Demo</vue-markdown>
+							<vue-markdown>[A link to Google](https://googl.com)</vue-markdown>
 						</div>`
 				}
 			}
