@@ -20,39 +20,45 @@ public class HttpClient {
 	}
 
 	public String get(String url) {
-		try {
-			Request.Builder builder = new Request.Builder();
-			if(!cookie.equals(""))
-				builder.addHeader("Cookie", cookie);
-			Request request = builder.url(url)
-						.get()
-						.build();
-			Response response = client.newCall(request).execute();
-			if(!response.headers("Set-Cookie").isEmpty())
-				cookie = response.headers("Set-Cookie").get(0).split(";")[0];
-			return response.body().string();
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
+		int reconnectCount = 0;
+		do {
+			try {
+				Request.Builder builder = new Request.Builder();
+				if(!cookie.equals(""))
+					builder.addHeader("Cookie", cookie);
+				Request request = builder.url(url)
+							.get()
+							.build();
+				Response response = client.newCall(request).execute();
+				if(!response.headers("Set-Cookie").isEmpty())
+					cookie = response.headers("Set-Cookie").get(0).split(";")[0];
+				return response.body().string();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		} while(reconnectCount++ < 5);
 		return "";
 	}
 
 	public String post(String url, String json) {
-		try {
-			RequestBody body = RequestBody.create(JSON, json);
-			Request.Builder builder = new Request.Builder();
-			if(!cookie.equals(""))
-				builder.addHeader("Cookie", cookie);
-			Request request = builder.url(url)
-						.post(body)
-						.build();
-			Response response = client.newCall(request).execute();
-			if(!response.headers("Set-Cookie").isEmpty())
-				cookie = response.headers("Set-Cookie").get(0).split(";")[0];
-			return response.body().string();
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
+		int reconnectCount = 0;
+		do {
+			try {
+				RequestBody body = RequestBody.create(JSON, json);
+				Request.Builder builder = new Request.Builder();
+				if(!cookie.equals(""))
+					builder.addHeader("Cookie", cookie);
+				Request request = builder.url(url)
+							.post(body)
+							.build();
+				Response response = client.newCall(request).execute();
+				if(!response.headers("Set-Cookie").isEmpty())
+					cookie = response.headers("Set-Cookie").get(0).split(";")[0];
+				return response.body().string();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		} while(reconnectCount++ < 5);
 		return "";
 	}
 }
