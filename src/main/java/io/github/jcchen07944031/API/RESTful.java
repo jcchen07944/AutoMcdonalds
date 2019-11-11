@@ -68,11 +68,12 @@ public class RESTful {
 			retJson += "{\"username\":\"" + accountList.get(i).getUsername() + "\", \"history\":[";
 			ArrayList<History> historyList = database.getHistory(accountList.get(i));
 
-			for(int j = 0; j < historyList.size(); j++) {
-				if(j != 0)
-					retJson += ",";
-				retJson += historyList.get(j).getJson();
-			}
+			if(historyList != null)
+				for(int j = 0; j < historyList.size(); j++) {
+					if(j != 0)
+						retJson += ",";
+					retJson += historyList.get(j).getJson();
+				}
 			retJson += "]}";
 		}
 		retJson += "]";
