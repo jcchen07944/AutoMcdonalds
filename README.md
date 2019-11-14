@@ -2,8 +2,6 @@
 Make mcddaily run automatically on pc.   
 
 ## Login Json  
-*By decompiling tw.com.mcddaily apk*
-
 Key        | Value
 -----------|-------------------------
 account    | account  
