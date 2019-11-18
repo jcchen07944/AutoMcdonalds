@@ -7,6 +7,9 @@ import io.github.jcchen07944031.Entities.Constants;
 
 import org.json.JSONObject;
 
+import java.util.Random;
+import java.util.UUID;
+
 public class Account {
 
 	private HttpClient httpClient;
@@ -14,6 +17,9 @@ public class Account {
 	private String password;
 	private String accessToken;
 	private String keyword;
+
+	private String deviceUUID;
+	private String model;
 
 	public Account() {
 		this.httpClient = new HttpClient();
@@ -62,13 +68,33 @@ public class Account {
 		return keyword;
 	}
 
+	public void setDeviceUUID(String deviceUUID) {
+		this.deviceUUID = deviceUUID;
+	}
+
+	public String getDeviceUUID() {
+		return deviceUUID;
+	}
+	
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
 	public boolean login() {
 		if(verifyAccessToken())
 			return true;
 
+		setDeviceUUID(getRandomUUID());
+		setModel(getRandomModel());
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_LOGIN);
 		postContent.setUsername(username);
 		postContent.setPassword(password);
+		postContent.setDeviceUUID(deviceUUID);
+		postContent.setModel(model);
 		String result = httpClient.post(McDAPI.McD_API_LOGIN, postContent.getJson());
 		try {
 			JSONObject resultJson;
@@ -108,6 +134,18 @@ public class Account {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+	private String getRandomUUID() {
+		UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+		String str = uid.randomUUID() + "";
+		return str.split("-")[3] + str.split("-")[4];
+	}
+
+	private String getRandomModel() {
+		Random random = new Random();
+		String[] models = {"Pixel 3", "Samsung s10", "HTC U-3u", "Sony Z5", "Zenfone 5z", "HTC U-1u", "Pixel 3 XL"};
+		return models[random.nextInt(7)];
 	}
 }
 

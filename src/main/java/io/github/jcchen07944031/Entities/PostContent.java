@@ -16,10 +16,10 @@ public class PostContent {
 	private String accessToken;
 
 	private class SourceInfo {
-		final String deviceUUID = "e43b4f1d26bcae41";
+		String deviceUUID = "e43b4f1d26bcae41";
 		final String appVersion = "2.2.1";
 		final String versionRelease = "9";
-		final String model = "Pixel 3";
+		String model = "Pixel 3";
 		final String platform = "Android";
 		String date;
 
@@ -33,6 +33,14 @@ public class PostContent {
 
 		public void setDate(String date) {
 			this.date = date;
+		}
+
+		public void setDeviceUUID(String deviceUUID) {
+			this.deviceUUID = deviceUUID;
+		}
+
+		public void setModel(String model) {
+			this.model = model;
 		}
 
 		public String getJson() {
@@ -61,6 +69,14 @@ public class PostContent {
 
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+	}
+
+	public void setDeviceUUID(String deviceUUID) {
+		sourceInfo.setDeviceUUID(deviceUUID);
+	}
+
+	public void setModel(String model) {
+		sourceInfo.setModel(model);
 	}
 		
 	public void setMask() {

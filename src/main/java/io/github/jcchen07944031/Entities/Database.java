@@ -53,9 +53,11 @@ public class Database {
 		String password = AESEncrypt(account.getPassword(), Constants.DATABASE_PASSWORD_AES_KEY);
 		String accessToken = AESEncrypt(account.getAccessToken(), Constants.DATABASE_ACCESSTOKEN_AES_KEY);
 		String keyword = AESEncrypt(account.getKeyword(), Constants.DATABASE_KEYWORD_AES_KEY);
-		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`) " +
-				"VALUES ('" + username + "', '" + password + "', '" + accessToken + "', '" + keyword + "') " + 
-				"ON DUPLICATE KEY UPDATE password = '" + password + "', access_token = '" + accessToken + "', keyword = '" + keyword + "'";
+		String deviceUUID = account.getDeviceUUID();
+		String model = account.getModel();
+		String sql = "INSERT INTO account(`username`, `password`, `access_token`, `keyword`, `device_uuid`, `model`) " +
+				"VALUES ('" + username + "', '" + password + "', '" + accessToken + "', '" + keyword + "', '" + deviceUUID + "', '" + model + "') " + 
+				"ON DUPLICATE KEY UPDATE password = '" + password + "', access_token = '" + accessToken + "', keyword = '" + keyword + "', device_uuid = '" + deviceUUID + "', model = '" + model + "'";
 
 		try {
 			statement.execute(sql);
@@ -89,6 +91,8 @@ public class Database {
 				account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
 				account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
 				account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
+				account.setDeviceUUID(resultSet.getString("device_uuid"));
+				account.setModel(resultSet.getString("model"));
 				accountList.add(account);
 			}
 		} catch(Exception ex) {
@@ -110,6 +114,8 @@ public class Database {
 			account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
 			account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
 			account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
+			account.setDeviceUUID(resultSet.getString("device_uuid"));
+			account.setModel(resultSet.getString("model"));
 			return account;
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -130,6 +136,8 @@ public class Database {
 				account.setPassword(AESDecrypt(resultSet.getString("password"), Constants.DATABASE_PASSWORD_AES_KEY));
 				account.setAccessToken(AESDecrypt(resultSet.getString("access_token"), Constants.DATABASE_ACCESSTOKEN_AES_KEY));
 				account.setKeyword(AESDecrypt(resultSet.getString("keyword"), Constants.DATABASE_KEYWORD_AES_KEY));
+				account.setDeviceUUID(resultSet.getString("device_uuid"));
+				account.setModel(resultSet.getString("model"));
 				accountList.add(account);
 			}
 			return accountList;
