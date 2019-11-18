@@ -23,6 +23,8 @@ public class HttpClient {
 		int reconnectCount = 0;
 		do {
 			try {
+				if(reconnectCount > 0)
+					Thread.sleep(30000);
 				Request.Builder builder = new Request.Builder();
 				if(!cookie.equals(""))
 					builder.addHeader("Cookie", cookie);
