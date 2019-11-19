@@ -119,8 +119,12 @@ public class Account {
 	}
 
 	public boolean verifyAccessToken() {
+		if(accessToken.equals(""))
+			return false;
 		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_VERIFY_ACCESS_TOKEN);
 		postContent.setAccessToken(accessToken);
+		postContent.setDeviceUUID(deviceUUID);
+		postContent.setModel(model);
 		String result = httpClient.post(McDAPI.McD_API_VERIFY_ACCESS_TOKEN, postContent.getJson());
 		try {
 			JSONObject resultJson;

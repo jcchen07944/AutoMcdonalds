@@ -37,6 +37,8 @@ public class Coupon {
 		/* Get lottery */
 		postContent = new PostContent(Constants.POSTCONTENT.MODE_LOTTERY_GET);
 		postContent.setAccessToken(account.getAccessToken());
+		postContent.setDeviceUUID(account.getDeviceUUID());
+		postContent.setModel(account.getModel());
 		result = httpClient.post(McDAPI.McD_API_LOTTERY_GET, postContent.getJson());
 		try {
 			JSONObject resultJson;
