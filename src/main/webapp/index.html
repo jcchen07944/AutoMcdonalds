@@ -52,8 +52,8 @@
 		var vm = new Vue({
 			el:'#am-page',
 			data: {
-				view: 'register-component',
-				active: 'register'
+				view: 'history-component',
+				active: 'history'
 			},
 			methods: {
 				changeView: function(currentView) {
@@ -252,6 +252,14 @@
 							.catch(function (error) {
 								console.log(error);
 							});
+						},
+						mouse_enter: function(image_name, image_type){
+							var height = image_type == 'coupon' ? 500:100;
+							var imageTag='<div class="image" style="position:absolute;">'+'<img src="'+image_name+'" alt="image" height="' + height + '" />'+'</div>';
+							$('#am-history-table').parent('div').append(imageTag);
+						},
+						mouse_leave: function(){
+							$('#am-history-table').parent('div').children('div.image').remove();
 						}
 
 					},
@@ -327,7 +335,11 @@
 										<table>
 											<tbody>
 												<tr v-for="row in rows[selected]">
-													<td style="width: 300px; text-align: center;">{{row['title']}}</td>
+													<td style="width: 300px; text-align: center;">
+														<div>
+															<a @mouseenter="mouse_enter(row['image_url'], row['type'])" @mouseleave="mouse_leave">{{row['title']}}</a>
+														</div>
+													</td>
 													<td style="width: 180px; text-align: center;">{{row['end_datetime']}}</td>
 													<td style="width: 80px; text-align: center;">{{row['type']}}</td>
 													<td style="width: 190px; text-align: center;">{{row['time_stamp']}}</td>
