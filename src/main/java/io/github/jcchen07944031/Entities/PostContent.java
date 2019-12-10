@@ -17,7 +17,7 @@ public class PostContent {
 
 	private class SourceInfo {
 		String deviceUUID = "e43b4f1d26bcae41";
-		final String appVersion = "2.2.2";
+		final String appVersion = "2.2.4";
 		final String versionRelease = "9";
 		String model = "Pixel 3";
 		final String platform = "Android";
