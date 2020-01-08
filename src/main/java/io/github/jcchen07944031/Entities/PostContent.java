@@ -99,6 +99,9 @@ public class PostContent {
 		else if(MODE == Constants.POSTCONTENT.MODE_WEATHER_GET) {
 			return;
 		}
+		else if(MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST) {
+			return;
+		}
 		data += this.orderNo + sourceInfo.platform;
 		
 		mask = convertSymbolsToUnicode(Encrypt.encode(null, data));
@@ -124,7 +127,7 @@ public class PostContent {
 		setMask();
 		String retJson = "";
 
-		if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET) {
+		if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET || MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST) {
 			return "{" + "\"access_token\": " + "\"" + this.accessToken + "\"," + "\"source_info\": " + this.sourceInfo.getJson() + "}";
 		}
 

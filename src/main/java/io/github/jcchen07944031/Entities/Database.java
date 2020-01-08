@@ -70,10 +70,9 @@ public class Database {
 	public void deleteAccount(Account account) {
 		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
 		String sqlDelete = "DELETE FROM account WHERE username='" + username + "'";
-		String sqlDrop = "DROP TABLE IF EXISTS `" + username + "`";
+		deleteHistory(account);
 		try {
 			statement.execute(sqlDelete);
-			statement.execute(sqlDrop);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -152,6 +151,23 @@ public class Database {
 		if(history == null)
 			return;
 		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+
+		String sqlUpdate = "INSERT INTO statistics(`object_id`, `title`, `image_url`, `count`) " +
+					"VALUES ('" + history.getObjectID() + "', '" + history.getTitle() + "', '" + history.getImgUrl() + "', " + 1 + ") " + 
+					"ON DUPLICATE KEY UPDATE image_url = '" + history.getImgUrl() + "', count = count + 1";
+
+		try {
+			statement.execute(sqlUpdate);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void updateHistory(Account account, ArrayList<History> historyList) {
+		if(historyList == null)
+			return;
+		
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
 		String sqlCreate = "CREATE TABLE IF NOT EXISTS `" + username + "` (" +
 				"`id` VARCHAR(15), " + 
 				"`object_id` VARCHAR(15), " +
@@ -162,19 +178,29 @@ public class Database {
 				"`status` VARCHAR(15), " +
 				"`time_stamp` TIMESTAMP, " +
 				"PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		String sqlInsert = "INSERT INTO `" + username + "`(`id`, `object_id`, `type`, `title`, `image_url`, `end_datetime`, `status`) " +
-					"VALUES ('" + history.getID() + "', '" + history.getObjectID() + "', '" + history.getType() + "', '" + 
-						history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
-					"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
-
-		String sqlUpdate = "INSERT INTO statistics(`object_id`, `title`, `image_url`, `count`) " +
-					"VALUES ('" + history.getObjectID() + "', '" + history.getTitle() + "', '" + history.getImgUrl() + "', " + 1 + ") " + 
-					"ON DUPLICATE KEY UPDATE image_url = '" + history.getImgUrl() + "', count = count + 1";
-
+		
 		try {
+			deleteHistory(account);
 			statement.execute(sqlCreate);
-			statement.execute(sqlInsert);
-			statement.execute(sqlUpdate);
+			for(int i = 0; i < historyList.size(); i++) {
+				History history = historyList.get(i);
+				String sqlInsert = "INSERT INTO `" + username + "`(`id`, `object_id`, `type`, `title`, `image_url`, `end_datetime`, `status`) " +
+						"VALUES ('" + history.getID() + "', '" + history.getObjectID() + "', '" + history.getType() + "', '" + 
+							history.getTitle() + "', '" + history.getImgUrl() + "', '" + history.getEndDateTime() + "', '" + history.getStatus() + "') " +
+						"ON DUPLICATE KEY UPDATE id = '" + history.getID() + "'";
+				statement.execute(sqlInsert);
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	private void deleteHistory(Account account) {
+		String username = AESEncrypt(account.getUsername(), Constants.DATABASE_USERNAME_AES_KEY);
+		String sqlDrop = "DROP TABLE IF EXISTS `" + username + "`";
+		
+		try {
+			statement.execute(sqlDrop);
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}

@@ -8,6 +8,10 @@ import io.github.jcchen07944031.Entities.McDAPI;
 import io.github.jcchen07944031.Entities.Constants;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
+
+
+import java.util.ArrayList;
 
 public class Coupon {
 
@@ -58,6 +62,43 @@ public class Coupon {
 						history.setStatus((int)resultJson.getJSONObject("results").getJSONObject(type).get("status") + "");
 						return history;
 					}
+				}
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<History> getCouponList() {
+		/* Get History */
+		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_COUPON_GET_LIST);
+		postContent.setAccessToken(account.getAccessToken());
+		postContent.setDeviceUUID(account.getDeviceUUID());
+		postContent.setModel(account.getModel());
+		String result = httpClient.post(McDAPI.McD_API_COUPON_GET_LIST, postContent.getJson());
+				System.out.println("1234");
+		try {
+			JSONObject resultJson;
+			ArrayList<History> historyList = new ArrayList<History>();
+			if(result != "")  {
+				resultJson = new JSONObject(result);
+				if((int)resultJson.get("rc") == 1) {
+					System.out.println(resultJson);
+					JSONArray coupons = resultJson.getJSONObject("results").getJSONArray("coupons");
+					for(int i = 0; i < coupons.length(); i++) {
+						History history = new History();
+						history.setObjectID((int)coupons.getJSONObject(i).getJSONObject("object_info").get("object_id") + "");
+						history.setTitle((String)coupons.getJSONObject(i).getJSONObject("object_info").get("title"));
+						history.setEndDateTime((String)coupons.getJSONObject(i).getJSONObject("object_info").get("redeem_end_datetime"));
+						history.setImgUrl((String)coupons.getJSONObject(i).getJSONObject("object_info").getJSONObject("image").get("url"));
+						history.setID((int)coupons.getJSONObject(i).get("coupon_id") + "");
+						history.setType("coupon");
+						history.setStatus((int)coupons.getJSONObject(i).get("status") + "");
+						historyList.add(history);
+					}
+					return historyList;
 				}
 			}
 		} catch(Exception ex) {
