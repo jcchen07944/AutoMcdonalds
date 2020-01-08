@@ -143,13 +143,13 @@
 									<span id="am-register-title">登記</span>
 								</div>
 								<div class="am-wrap-input validate-input" data-validate = "Username is required">
-									<input class="am-input" type="text" name="username" placeholder="Username" v-model="username">
+									<input class="am-input" type="text" name="username" placeholder="Username" v-model="username"/>
 								</div>
 								<div class="am-wrap-input validate-input" data-validate = "Password is required">
-									<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password">
+									<input class="am-input" type="password" name="pass" placeholder="Password" v-model="password"/>
 								</div>
 								<div class="am-wrap-input validate-input">
-									<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword">
+									<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword"/>
 								</div>
 								<div class="am-wrap-button">
 									<div id="am-button-register">
@@ -301,7 +301,7 @@
 							<div id="am-history-search">
 								<div style="text-align: center">
 									<div class="am-wrap-input" style="display: inline-block; width: 200px; vertical-align: middle; margin-bottom: 0px;">
-										<input class="am-input" type="text" name="keyword" placeholder="Keyword" v-model="keyword" style="height: 33px;">
+										<input class="am-input" @keydown.enter="btn_history" type="text" name="keyword" placeholder="Keyword" v-model="keyword" style="height: 33px;" />
 									</div>
 									<div id="am-button-history" style="display: inline-block; vertical-align: middle;">
 										<button class="am-button" @click="btn_history">
@@ -360,10 +360,11 @@
 						});
 					},
 					template: `
+					<!--
 						<div id="am-about" class="am-content-block" data-app="true">
 							<vue-markdown>## Demo</vue-markdown>
 							<vue-markdown>[A link to Google](https://googl.com)</vue-markdown>
-						</div>`
+						</div>-->`
 				}
 			}
 		});
