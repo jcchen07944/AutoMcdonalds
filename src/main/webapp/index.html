@@ -284,7 +284,7 @@
 									for(let i = 0; i < response.data.length; i++) {
 										history.usernames.push({'text': response.data[i].username, 'value': i});
 										history.rows[i] = [];
-										Vue.set(history.rows, i, response.data[i].history.slice().reverse());
+										Vue.set(history.rows, i, response.data[i].history.slice());
 									}
 									history.keyword = '';
 								}
@@ -319,8 +319,7 @@
 							return {
 								key1: 'title',
 								key2: 'end_datetime',
-								key3: 'type',
-								key4: 'time_stamp'
+								key3: 'status'
 							};
 						},
 						"columnsName": function columns() {
@@ -330,8 +329,7 @@
 							return {
 								key1: '品名',
 								key2: '結束日期',
-								key3: '種類',
-								key4: '領取時間'
+								key3: '狀態'
 							};
 						}
 					},
@@ -364,8 +362,7 @@
 												<tr>
 													<th style="width: 300px; text-align: center;">品名</th>
 													<th style="width: 180px; text-align: center;">結束日期</th>
-													<th style="width: 80px; text-align: center;">種類</th>
-													<th style="width: 190px; text-align: center;">領取時間</th>
+													<th style="width: 100px; text-align: center;">狀態</th>
 												</tr>
 											</thead>
 										</table>
@@ -380,8 +377,7 @@
 														</div>
 													</td>
 													<td style="width: 180px; text-align: center;">{{row['end_datetime']}}</td>
-													<td style="width: 80px; text-align: center;">{{row['type']}}</td>
-													<td style="width: 190px; text-align: center;">{{row['time_stamp']}}</td>
+													<td style="width: 100px; text-align: center;"><div v-if="row['status'] === '2'">已兌換</div></td>
 												</tr>
 											</tbody>
 										</table>
