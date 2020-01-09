@@ -74,13 +74,18 @@
 							return (a[1] > b[1]) ? -1 : 1;
 						}
 						
-						axios.get('/api/getStatistics')
+						axios.get('/AutoMcdonalds/api/getStatistics')
 						.then(function (response) {
 							console.log(response);
 							if(response.data) {
 								var data = [];
 								for(i = 0; i < response.data.length; i++) {
-									data.push([response.data[i].title, parseInt(response.data[i].count, 10)]);
+									var newTitle = response.data[i].title;
+									var type1 = newTitle.indexOf("(G");
+									var type2 = newTitle.indexOf("_G");
+									var type3 = newTitle.indexOf(" (0");
+									newTitle = newTitle.substring(0, type1 == -1? (type2 == -1? (type3 == -1? newTitle.length : type3) : type2) : type1);
+									data.push([newTitle, parseInt(response.data[i].count, 10)]);
 								}
 								data.sort(dataSort);
 								Chartkick.options = {
@@ -91,7 +96,10 @@
 										plotOptions: {
 											pie: {
 												dataLabels: {
-													color: "white"
+													color: "white",
+													style: {
+														fontSize: "14px"
+													}
 												}
 											}
 										}
