@@ -3,6 +3,7 @@ package io.github.jcchen07944031.API;
 import io.github.jcchen07944031.Entities.Database;
 import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.History;
+import io.github.jcchen07944031.Entities.Statistic;
 
 import java.util.*;
 import javax.ws.rs.*;
@@ -75,6 +76,23 @@ public class RESTful {
 					retJson += historyList.get(j).getJson();
 				}
 			retJson += "]}";
+		}
+		retJson += "]";
+
+		return retJson;
+	}
+	
+	@GET
+	@Path("/getStatistics")
+	public String getStatistics() {
+		Database database = new Database();
+		ArrayList<Statistic> statisticList = database.getStatistics();
+
+		String retJson = "[";
+		for(int i = 0; i < statisticList.size(); i++) {
+			if(i != 0)
+				retJson += ",";
+			retJson += "{\"title\":\"" + statisticList.get(i).getTitle() + "\"," + "\"count\":\"" + statisticList.get(i).getCount() + "\"}";
 		}
 		retJson += "]";
 

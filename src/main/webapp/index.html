@@ -18,6 +18,8 @@
 	<script src="js/main.js"></script>
 	<script src="js/perfect-scrollbar.min.js"></script>
 	<script src="js/vue-markdown.js"></script>
+	<script src="https://code.highcharts.com/highcharts.src.js"></script>
+	<script src="js/chartkick.js"></script>
 </head>
 <body>
 	<div id="am-page">
@@ -65,9 +67,47 @@
 			},
 			components: {
 				'home-component': {
+					methods: {
+					},
+					mounted() {
+						function dataSort(a, b) {
+							return (a[1] > b[1]) ? -1 : 1;
+						}
+						
+						axios.get('/api/getStatistics')
+						.then(function (response) {
+							console.log(response);
+							if(response.data) {
+								var data = [];
+								for(i = 0; i < response.data.length; i++) {
+									data.push([response.data[i].title, parseInt(response.data[i].count, 10)]);
+								}
+								data.sort(dataSort);
+								Chartkick.options = {
+									library: {
+										chart: {
+											backgroundColor: "transparent"
+										},
+										plotOptions: {
+											pie: {
+												dataLabels: {
+													color: "white"
+												}
+											}
+										}
+									}
+								}
+								new Chartkick.PieChart("history-chart", data, {adapter: "highcharts"});
+							}
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
+					},
 					template: `
 						<div id="am-home" class="am-content-block" data-app="true">
-							HOME
+							<div id="home-title" style="font-size: 60px; font-weight: bold; color: #fff;">Statistics</div>
+							<div id="history-chart" style="height: 500px; width: 800px"></div>
 						</div>`
 				},
 				'register-component': {
@@ -89,7 +129,7 @@
 						btn_register: function() {
 							let register = this;
 							axios.post('/api/register', {
-								username: register.username, 
+								username: register.username,
 								password: register.password,
 								keyword: register.keyword
 							})
@@ -261,7 +301,6 @@
 						mouse_leave: function(){
 							$('#am-history-table').parent('div').children('div.image').remove();
 						}
-
 					},
 					mounted() {
 						$('.js-pscroll').each(function(){

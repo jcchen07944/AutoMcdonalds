@@ -3,6 +3,7 @@ package io.github.jcchen07944031.Entities;
 import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.History;
 import io.github.jcchen07944031.Entities.Constants;
+import io.github.jcchen07944031.Entities.Statistic;
 
 import java.util.ArrayList;
 
@@ -229,6 +230,27 @@ public class Database {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ArrayList<Statistic> getStatistics() {
+		ArrayList<Statistic> statisticList = new ArrayList<Statistic>();
+
+		String sql = "SELECT * FROM statistics";
+		try {
+			resultSet = statement.executeQuery(sql);
+			while(resultSet.next()) {
+				Statistic statistic = new Statistic();
+				statistic.setObjectId(resultSet.getString("object_id"));
+				statistic.setTitle(resultSet.getString("title"));
+				statistic.setImgUrl(resultSet.getString("image_url"));
+				statistic.setCount(resultSet.getString("count"));
+				statisticList.add(statistic);
+			}
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return statisticList;
 	}
 	
 	private String AESEncrypt(String str, String key) {
