@@ -381,7 +381,7 @@
 								</select>
 								<div class="select__arrow"></div>
 							</div>
-							<div id="am-history-sticker">
+							<div id="am-history-sticker" v-bind:class="[((init == 1) || (usernames.length == 0))? 'not-display':'']">
 								歡樂貼數量︰{{stickers[selected]}}<span style="display:inline-block; width:30px;"/>月底到期︰{{expire_stickers[selected]}}
 							</div>
 							<div id="am-history-table" class="am-content-block" data-app="true">
