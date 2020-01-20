@@ -553,6 +553,12 @@ body.offcanvas #am-aside {
   color: #e5e5e5;
 }
 
+#am-history-update-time {
+  padding-top: 10px;
+  color: #a0a0a0;
+  font-weight: bold;
+}
+
 .select__arrow {
   position: absolute;
   top: 16px;

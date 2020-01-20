@@ -275,7 +275,8 @@
 							selected: 0,
 							init: 1,
 							stickers: [],
-							expire_stickers: []
+							expire_stickers: [],
+							update_time: []
 						}
 					},
 					methods: {
@@ -298,10 +299,13 @@
 										history.rows[i] = [];
 										history.stickers[i] = 0;
 										history.expire_stickers[i] = 0;
+										history.update_time[i] = '';
 										let orig_history = response.data[i].history.slice();
 										let new_history = [];
 										let cnt = 0;
 										for(let j = 0; j < orig_history.length; j++) {
+											if(j == 0)
+												history.update_time[i] = orig_history[j].time_stamp;
 											if(orig_history[j].type == 'sticker') {
 												history.stickers[i]++;
 												if((new Date(orig_history[j].end_datetime)).getMonth() == (new Date(Date.now())).getMonth())
@@ -412,6 +416,9 @@
 											</tbody>
 										</table>
 									</div>
+								</div>
+								<div id="am-history-update-time" v-bind:class="[((init == 1) || (usernames.length == 0))? 'not-display':'']">
+									更新時間︰{{update_time[selected]}}
 								</div>
 							</div>
 						</div>`
