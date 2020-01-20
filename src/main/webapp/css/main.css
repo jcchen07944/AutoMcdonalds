@@ -489,7 +489,6 @@ body.offcanvas #am-aside {
 }
 
 #am-history-search {
-  height: 20%;
   width: 300px;
   padding-top: 25px;
   padding-bottom: 5px;
@@ -547,6 +546,11 @@ body.offcanvas #am-aside {
 #am-history-select select:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+#am-history-sticker {
+  padding-bottom: 10px;
+  color: #e5e5e5;
 }
 
 .select__arrow {

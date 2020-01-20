@@ -79,7 +79,7 @@ public class PostContent {
 		sourceInfo.setModel(model);
 	}
 		
-	public void setMask() {
+	private void setMask() {
 		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date mDate = new Date(System.currentTimeMillis());
 		sourceInfo.setDate(mSimpleDateFormat.format(mDate));
@@ -100,6 +100,9 @@ public class PostContent {
 			return;
 		}
 		else if(MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST) {
+			return;
+		}
+		else if(MODE == Constants.POSTCONTENT.MODE_STICKER_GET_LIST) {
 			return;
 		}
 		data += this.orderNo + sourceInfo.platform;
@@ -127,7 +130,7 @@ public class PostContent {
 		setMask();
 		String retJson = "";
 
-		if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET || MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST) {
+		if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET || MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST || MODE == Constants.POSTCONTENT.MODE_STICKER_GET_LIST) {
 			return "{" + "\"access_token\": " + "\"" + this.accessToken + "\"," + "\"source_info\": " + this.sourceInfo.getJson() + "}";
 		}
 

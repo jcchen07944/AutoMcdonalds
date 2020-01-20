@@ -72,18 +72,17 @@ public class Coupon {
 	}
 	
 	public ArrayList<History> getCouponList() {
-		/* Get History */
-		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_COUPON_GET_LIST);
-		postContent.setAccessToken(account.getAccessToken());
-		postContent.setDeviceUUID(account.getDeviceUUID());
-		postContent.setModel(account.getModel());
-		String result = httpClient.post(McDAPI.McD_API_COUPON_GET_LIST, postContent.getJson());
-				System.out.println("1234");
 		try {
-			JSONObject resultJson;
 			ArrayList<History> historyList = new ArrayList<History>();
+			
+			/* Get Coupon */
+			PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_COUPON_GET_LIST);
+			postContent.setAccessToken(account.getAccessToken());
+			postContent.setDeviceUUID(account.getDeviceUUID());
+			postContent.setModel(account.getModel());
+			String result = httpClient.post(McDAPI.McD_API_COUPON_GET_LIST, postContent.getJson());
 			if(result != "")  {
-				resultJson = new JSONObject(result);
+				JSONObject resultJson = new JSONObject(result);
 				if((int)resultJson.get("rc") == 1) {
 					System.out.println(resultJson);
 					JSONArray coupons = resultJson.getJSONObject("results").getJSONArray("coupons");
@@ -98,9 +97,34 @@ public class Coupon {
 						history.setStatus((int)coupons.getJSONObject(i).get("status") + "");
 						historyList.add(history);
 					}
-					return historyList;
 				}
 			}
+			
+			/* Get Sticker */
+			postContent = new PostContent(Constants.POSTCONTENT.MODE_STICKER_GET_LIST);
+			postContent.setAccessToken(account.getAccessToken());
+			postContent.setDeviceUUID(account.getDeviceUUID());
+			postContent.setModel(account.getModel());
+			result = httpClient.post(McDAPI.McD_API_STICKER_GET_LIST, postContent.getJson());
+			if(result != "")  {
+				JSONObject resultJson = new JSONObject(result);
+				if((int)resultJson.get("rc") == 1) {
+					System.out.println(resultJson);
+					JSONArray stickers = resultJson.getJSONObject("results").getJSONArray("stickers");
+					for(int i = 0; i < stickers.length(); i++) {
+						History history = new History();
+						history.setObjectID((int)stickers.getJSONObject(i).getJSONObject("object_info").get("object_id") + "");
+						history.setTitle((String)stickers.getJSONObject(i).getJSONObject("object_info").get("title"));
+						history.setEndDateTime((String)stickers.getJSONObject(i).getJSONObject("object_info").get("expire_datetime"));
+						history.setImgUrl((String)stickers.getJSONObject(i).getJSONObject("object_info").getJSONObject("image").get("url"));
+						history.setID((int)stickers.getJSONObject(i).get("sticker_id") + "");
+						history.setType("sticker");
+						history.setStatus((int)stickers.getJSONObject(i).get("status") + "");
+						historyList.add(history);
+					}
+				}
+			}
+			return historyList;
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}

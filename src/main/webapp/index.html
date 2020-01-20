@@ -74,7 +74,7 @@
 							return (a[1] > b[1]) ? -1 : 1;
 						}
 						
-						axios.get('/AutoMcdonalds/api/getStatistics')
+						axios.get('/api/getStatistics')
 						.then(function (response) {
 							console.log(response);
 							if(response.data) {
@@ -273,7 +273,9 @@
 							rows: [],
 							usernames: [],
 							selected: 0,
-							init: 1
+							init: 1,
+							stickers: [],
+							expire_stickers: []
 						}
 					},
 					methods: {
@@ -288,11 +290,28 @@
 								if(response.data) {
 									history.usernames = [];
 									history.rows = [];
+									history.stickers = [];
+									history.expire_stickers = [];
 									history.selected = 0;
 									for(let i = 0; i < response.data.length; i++) {
 										history.usernames.push({'text': response.data[i].username, 'value': i});
 										history.rows[i] = [];
-										Vue.set(history.rows, i, response.data[i].history.slice());
+										history.stickers[i] = 0;
+										history.expire_stickers[i] = 0;
+										let orig_history = response.data[i].history.slice();
+										let new_history = [];
+										let cnt = 0;
+										for(let j = 0; j < orig_history.length; j++) {
+											if(orig_history[j].type == 'sticker') {
+												history.stickers[i]++;
+												if((new Date(orig_history[j].end_datetime)).getMonth() == (new Date(Date.now())).getMonth())
+													history.expire_stickers[i]++;
+											}
+											else {
+												new_history[cnt++] = orig_history[j];
+											}
+										}
+										Vue.set(history.rows, i, new_history);
 									}
 									history.keyword = '';
 								}
@@ -355,12 +374,15 @@
 									</div>
 								</div>
 								<div id="am-history-notfound" v-bind:class="[((init == 1) || (usernames.length > 0))? 'not-display':'']"><span>查無結果</span></div>
-								<div id="am-history-select" v-bind:class="[usernames.length == 0? 'not-display':'']">
-									<select v-model="selected">
-										<option v-for="username in usernames" v-bind:value="username.value">{{username.text}}</option>
-									</select>
-									<div class="select__arrow"></div>
-								</div>
+							</div>
+							<div id="am-history-select" v-bind:class="[usernames.length == 0? 'not-display':'']">
+								<select v-model="selected">
+									<option v-for="username in usernames" v-bind:value="username.value">{{username.text}}</option>
+								</select>
+								<div class="select__arrow"></div>
+							</div>
+							<div id="am-history-sticker">
+								歡樂貼數量︰{{stickers[selected]}}<span style="display:inline-block; width:30px;"/>月底到期︰{{expire_stickers[selected]}}
 							</div>
 							<div id="am-history-table" class="am-content-block" data-app="true">
 								<div class="am-table" >
