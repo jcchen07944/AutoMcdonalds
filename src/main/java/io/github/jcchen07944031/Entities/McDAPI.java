@@ -13,4 +13,6 @@ public class McDAPI {
 
 	public static final String McD_API_COUPON_GET_LIST = McD_API_BASE_URL_1 + "/coupon/get_list";
 	public static final String McD_API_STICKER_GET_LIST = McD_API_BASE_URL_1 + "/sticker/get_list";
+	
+	public static final String McD_API_STICKER_REDEEM = McD_API_BASE_URL_1 + "/sticker/redeem";
 }

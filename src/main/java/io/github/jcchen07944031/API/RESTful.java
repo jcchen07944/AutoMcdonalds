@@ -4,6 +4,7 @@ import io.github.jcchen07944031.Entities.Database;
 import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.History;
 import io.github.jcchen07944031.Entities.Statistic;
+import io.github.jcchen07944031.Entities.Coupon;
 
 import java.util.*;
 import javax.ws.rs.*;
@@ -97,5 +98,35 @@ public class RESTful {
 		retJson += "]";
 
 		return retJson;
+	}
+	
+	@POST
+	@Path("/redeemSticker")
+	public String redeemSticker(String message) {
+		Database database = new Database();
+		JSONObject messageJson = new JSONObject(message);
+		Account account = database.findAccountByUsername((String)messageJson.get("username"));
+		
+		if(account == null)
+			return "Account not found.";
+		
+		if(!account.getPassword().equals((String)messageJson.get("password")))
+			return "Password error.";
+		
+		if(account.login()){
+			Coupon coupon = new Coupon(account);
+			//History history = coupon.redeemSticker();
+			//if(history == null) { // redeem error.
+			//	return "Redeem error.";
+			//}
+			return "Redeem success.";
+		}
+		return "Login fail.";
+	}
+	
+	@POST
+	@Path("/update")
+	public String update(String message) {
+		return "";
 	}
 }

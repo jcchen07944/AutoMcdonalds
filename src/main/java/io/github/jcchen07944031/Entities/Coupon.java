@@ -130,4 +130,43 @@ public class Coupon {
 		}
 		return null;
 	}
+	
+	public History redeemSticker() {
+		ArrayList<History> historyList = getCouponList();
+		ArrayList<History> stickerList = new ArrayList<History>();
+		// Check the number of stickers.
+		int cnt = 0;
+		for(int i = 0; i < historyList.size(); i++) {
+			if(historyList.get(i).getType().equals("sticker")) {
+				stickerList.add(historyList.get(i));
+				cnt++;
+			}
+		}
+		if(cnt < 6)
+			return null;
+		
+		PostContent postContent = new PostContent(Constants.POSTCONTENT.MODE_STICKER_REDEEM);
+		postContent.setAccessToken(account.getAccessToken());
+		postContent.setDeviceUUID(account.getDeviceUUID());
+		postContent.setModel(account.getModel());
+		for(int i = 0; i < 6; i++)
+			postContent.addRedeemSticker(stickerList.get(i).getID());
+		
+		String result = httpClient.post(McDAPI.McD_API_STICKER_REDEEM, postContent.getJson());
+		if(result != "")  {
+			JSONObject resultJson = new JSONObject(result);
+			if((int)resultJson.get("rc") == 1) {
+				History history = new History();
+				history.setObjectID((int)resultJson.getJSONObject("results").getJSONObject("coupon").getJSONObject("object_info").get("object_id") + "");
+				history.setTitle((String)resultJson.getJSONObject("results").getJSONObject("coupon").getJSONObject("object_info").get("title"));
+				history.setEndDateTime((String)resultJson.getJSONObject("results").getJSONObject("coupon").getJSONObject("object_info").get("redeem_end_datetime"));
+				history.setImgUrl((String)resultJson.getJSONObject("results").getJSONObject("coupon").getJSONObject("object_info").getJSONObject("image").get("url"));
+				history.setID((int)resultJson.getJSONObject("results").getJSONObject("coupon").get("coupon_id") + "");
+				history.setType("coupon");
+				history.setStatus((int)resultJson.getJSONObject("results").getJSONObject("coupon").get("status") + "");
+				return history;
+			}
+		}
+		return null;
+	}
 }

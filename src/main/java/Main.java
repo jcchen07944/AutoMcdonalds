@@ -47,7 +47,7 @@ public class Main {
 				database.saveHistory(account, coupon.getLottery());
 				database.updateHistory(account, coupon.getCouponList());
 				try {
-					//Thread.sleep(rand.nextInt(120000));
+					Thread.sleep(rand.nextInt(120000));
 				} catch(Exception ex) {
 					ex.printStackTrace();
 				}

@@ -272,18 +272,20 @@
 							keyword: '',
 							rows: [],
 							usernames: [],
+							password: '',
 							selected: 0,
 							init: 1,
 							stickers: [],
 							expire_stickers: [],
-							update_time: []
+							update_time: [],
+							dialog_redeem: false
 						}
 					},
 					methods: {
 						btn_history: function() {
 							let history = this;
 							history.init = 0;
-							axios.post('/api/getHistory', {
+							axios.post('/AutoMcdonalds/api/getHistory', {
 								keyword: history.keyword
 							})
 							.then(function (response) {
@@ -324,20 +326,40 @@
 								console.log(error);
 							});
 						},
-						mouse_enter: function(image_name, image_type){
+						btn_redeem: function() {
+							let history = this;
+							axios.post('/AutoMcdonalds/api/redeemSticker', {
+								username: history.usernames[history.selected].text,
+								password: history.password
+							})
+							.then(function (response) {
+								console.log(response);
+								history.password = '';
+								history.dialog_redeem = false;
+							})
+							.catch(function (error) {
+								console.log(error);
+								history.password = '';
+								history.dialog_redeem = false;
+							});
+						},
+						btn_update: function() {
+						
+						},
+						mouse_enter: function(image_name, image_type) {
 							var height = image_type == 'coupon' ? 500:100;
 							var imageTag='<div class="image" style="position:absolute;">'+'<img src="'+image_name+'" alt="image" height="' + height + '" />'+'</div>';
 							$('#am-history-table').parent('div').append(imageTag);
 						},
-						mouse_leave: function(){
+						mouse_leave: function() {
 							$('#am-history-table').parent('div').children('div.image').remove();
 						}
 					},
 					mounted() {
-						$('.js-pscroll').each(function(){
+						$('.js-pscroll').each(function() {
 							var ps = new PerfectScrollbar(this);
 
-							$(window).on('resize', function(){
+							$(window).on('resize', function() {
 								ps.update();
 							})
 						});
@@ -387,6 +409,9 @@
 							</div>
 							<div id="am-history-sticker" v-bind:class="[((init == 1) || (usernames.length == 0))? 'not-display':'']">
 								歡樂貼數量︰{{stickers[selected]}}<span style="display:inline-block; width:30px;"/>月底到期︰{{expire_stickers[selected]}}
+								<button class="am-button" @click="dialog_redeem = true" style="display: inline-block; width: auto; margin-left: 20px; ">
+									兌換
+								</button>
 							</div>
 							<div id="am-history-table" class="am-content-block" data-app="true">
 								<div class="am-table" >
@@ -421,6 +446,17 @@
 									更新時間︰{{update_time[selected]}}
 								</div>
 							</div>
+							<v-dialog v-model="dialog_redeem" max-width="290">
+								<v-card>
+									<v-card-title>請輸入密碼確認</v-card-title>
+									<v-text-field class="am-input" v-model="password" @keydown.enter="btn_redeem" type="password" placeholder="Password" />
+									<v-card-actions>
+										<v-spacer></v-spacer>
+										<v-btn color="#228896" text @click="btn_redeem">確認</v-btn>
+										<v-btn color="#228896" text @click="dialog_redeem = false">取消</v-btn>
+									</v-card-actions>
+								</v-card>						
+							</v-dialog>
 						</div>`
 				},
 				'about-component': {
