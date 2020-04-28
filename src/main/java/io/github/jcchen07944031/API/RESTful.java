@@ -5,6 +5,7 @@ import io.github.jcchen07944031.Entities.Account;
 import io.github.jcchen07944031.Entities.History;
 import io.github.jcchen07944031.Entities.Statistic;
 import io.github.jcchen07944031.Entities.Coupon;
+import io.github.jcchen07944031.Entities.Constants;
 
 import java.util.*;
 import javax.ws.rs.*;
@@ -108,25 +109,40 @@ public class RESTful {
 		Account account = database.findAccountByUsername((String)messageJson.get("username"));
 		
 		if(account == null)
-			return "Account not found.";
+			return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.ACCOUNT_NOT_FOUND);
 		
 		if(!account.getPassword().equals((String)messageJson.get("password")))
-			return "Password error.";
+			return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.PASSWORD_ERROR);
 		
-		if(account.login()){
+		if(account.login()) {
 			Coupon coupon = new Coupon(account);
 			//History history = coupon.redeemSticker();
 			//if(history == null) { // redeem error.
 			//	return "Redeem error.";
 			//}
-			return "Redeem success.";
+			//database.saveHistory(account, history);
+			update(message);
+			return "";
 		}
-		return "Login fail.";
+		return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.LOGIN_FAILED);
 	}
 	
 	@POST
 	@Path("/update")
 	public String update(String message) {
-		return "";
+		Database database = new Database();
+		JSONObject messageJson = new JSONObject(message);
+		Account account = database.findAccountByUsername((String)messageJson.get("username"));
+		
+		if(account == null)
+			return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.ACCOUNT_NOT_FOUND);
+		
+		if(account.login()) {
+			Coupon coupon = new Coupon(account);
+			database.saveHistory(account, coupon.getLottery());
+			database.updateHistory(account, coupon.getCouponList());
+			return "";
+		}
+		return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.LOGIN_FAILED);
 	}
 }
