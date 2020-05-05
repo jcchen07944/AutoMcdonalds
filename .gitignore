@@ -2,3 +2,5 @@ Constants.java
 bin/
 .gradle/
 gradle.properties
+AM-deploy.sh
+src/main/webapp/node_modules
