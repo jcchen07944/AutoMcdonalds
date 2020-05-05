@@ -7,6 +7,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/vue-loading.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
 	<link href="css/vuetify.min.css" rel="stylesheet">
@@ -20,6 +21,7 @@
 	<script src="js/vue-markdown.js"></script>
 	<script src="https://code.highcharts.com/highcharts.src.js"></script>
 	<script src="js/chartkick.js"></script>
+	<script src="js/vue-loading.min.js"></script>
 </head>
 <body>
 	<div id="am-page">
@@ -282,7 +284,8 @@
 							dialog_redeem: false,
 							dialog_update: false,
 							dialog_info: false,
-							error_info: ''
+							error_info: '',
+							keyword_backup: ''
 						}
 					},
 					methods: {
@@ -294,6 +297,7 @@
 							})
 							.then(function (response) {
 								console.log(response);
+								history.keyword_backup = history.keyword;
 								if(response.data) {
 									history.usernames = [];
 									history.rows = [];
@@ -332,38 +336,57 @@
 						},
 						btn_redeem: function() {
 							let history = this;
+							let loader = history.$loading.show({
+								container: history.$refs.loading_container,
+							});
 							axios.post('/api/redeemSticker', {
 								username: history.usernames[history.selected].text,
 								password: history.password
 							})
 							.then(function (response) {
 								console.log(response);
-								history.password = '';
+								loader.hide();
 								history.dialog_redeem = false;
+								history.password = '';
+								if(response.data != '') {
+									history.error_info = response.data;
+									history.dialog_info = true;
+								}
+								else {
+									history.keyword = history.keyword_backup;
+									history.btn_history();
+								}
 							})
 							.catch(function (error) {
 								console.log(error);
+								loader.hide();
 								history.password = '';
 								history.dialog_redeem = false;
 							});
 						},
 						btn_update: function() {
 							let history = this;
+							let loader = history.$loading.show({
+								container: history.$refs.loading_container,
+							});
 							axios.post('/api/update', {
 								username: history.usernames[history.selected].text
 							})
 							.then(function (response) {
 								console.log(response);
+								loader.hide();
+								history.dialog_update = false;
 								if(response.data != '') {
-									history.dialog_update = false;
 									history.error_info = response.data;
 									history.dialog_info = true;
 								}
 								else {
-									window.location.reload();
+									history.keyword = history.keyword_backup;
+									history.btn_history();
 								}
 							})
 							.catch(function (error) {
+								loader.hide();
 								console.log(error);
 							});
 						},
@@ -409,7 +432,7 @@
 					},
 					template: `
 						<div style="height: 100%;display: flex;flex-direction: column;align-items: center;justify-content: center;">
-							<div id="am-history-search">
+							<div id="am-history-search" ref="loading_container">
 								<div style="text-align: center">
 									<div class="am-wrap-input" style="display: inline-block; width: 200px; vertical-align: middle; margin-bottom: 0px;">
 										<input class="am-input" @keydown.enter="btn_history" type="text" name="keyword" placeholder="Keyword" v-model="keyword" style="height: 33px;" />
@@ -518,6 +541,7 @@
 				}
 			}
 		});
+		Vue.use(VueLoading);
 	</script>
 </body>
 </html>

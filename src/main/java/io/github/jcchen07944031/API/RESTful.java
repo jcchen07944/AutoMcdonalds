@@ -116,13 +116,13 @@ public class RESTful {
 		
 		if(account.login()) {
 			Coupon coupon = new Coupon(account);
-			//History history = coupon.redeemSticker();
-			//if(history == null) { // redeem error.
-			//	return "Redeem error.";
-			//}
-			//database.saveHistory(account, history);
+			History history = coupon.redeemSticker();
+			if(history == null) { // redeem error.
+				return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.REDEEM_ERROR);
+			}
+			database.saveHistory(account, history);
 			update(message);
-			return "";
+			return "";//Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.STILL_TESTING);
 		}
 		return Constants.ERROR.getErrorInfo(Constants.ERROR.CODE.LOGIN_FAILED);
 	}
