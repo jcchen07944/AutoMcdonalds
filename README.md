@@ -1,5 +1,6 @@
 # AutoMcdonalds  
 Make mcddaily run automatically on pc.   
+http://jcchen.csie.org:9010 (For testing only, not always online.)
 
 ## Login Json  
 Key        | Value
