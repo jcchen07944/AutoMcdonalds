@@ -526,22 +526,19 @@
 				},
 				'about-component': {
 					mounted() {
-						Vue.use(VueMarkdown);
-						Vue.component('vue-markdown', VueMarkdown);
-						var vm = new Vue({
-							el: "#am-about"
-						});
+					
 					},
 					template: `
-					<!--
 						<div id="am-about" class="am-content-block" data-app="true">
-							<vue-markdown>## Demo</vue-markdown>
-							<vue-markdown>[A link to Google](https://googl.com)</vue-markdown>
-						</div>-->`
+							<vue-markdown style="color: white;">## About</vue-markdown>
+							<vue-markdown></vue-markdown>
+							<vue-markdown></vue-markdown>
+						</div>`
 				}
 			}
 		});
 		Vue.use(VueLoading);
+		Vue.use(VueMarkdown);
 	</script>
 </body>
 </html>
