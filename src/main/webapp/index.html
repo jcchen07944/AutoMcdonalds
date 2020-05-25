@@ -285,7 +285,8 @@
 							dialog_update: false,
 							dialog_info: false,
 							error_info: '',
-							keyword_backup: ''
+							keyword_backup: '',
+							selected_backup: 0
 						}
 					},
 					methods: {
@@ -303,7 +304,8 @@
 									history.rows = [];
 									history.stickers = [];
 									history.expire_stickers = [];
-									history.selected = 0;
+									history.selected = history.selected_backup;
+									history.selected_backup = 0;
 									for(let i = 0; i < response.data.length; i++) {
 										history.usernames.push({'text': response.data[i].username, 'value': i});
 										history.rows[i] = [];
@@ -354,6 +356,7 @@
 								}
 								else {
 									history.keyword = history.keyword_backup;
+									history.selected_backup = history.selected;
 									history.btn_history();
 								}
 							})
@@ -382,6 +385,7 @@
 								}
 								else {
 									history.keyword = history.keyword_backup;
+									history.selected_backup = history.selected;
 									history.btn_history();
 								}
 							})
