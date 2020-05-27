@@ -1,15 +1,8 @@
 # AutoMcdonalds  
 Make mcddaily run automatically on pc.   
-http://jcchen.csie.org:9010 (For testing only, do not have auto draw lottery and not always online.)
+http://jcchen.csie.org:9010 (For testing only, do not have auto draw lottery feature and not always online.)
 
-## Login Json  
-Key        | Value
------------|-------------------------
-account    | account  
-password   | password
-OrderNo    | DeviceUUID + yyyyMMddHHmmssSSS  
-mask       | Encrypt.encode(Build.VERSION.RELEASE + Build.MODEL + DeviceUUID + yyyy/MM/dd HH:mm:ss + appVersion + account + password + OrderNo + "Android")
-
+## Newest encryption algorithm (since version 2.2.1) 
 ``` 
 InputData = Build.VERSION.RELEASE + Build.MODEL + DeviceUUID + yyyy/MM/dd HH:mm:ss + appVersion + account + password + OrderNo + "Android"  
 PreProcessData = "McD" + InputData + "App"  
