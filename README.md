@@ -1,6 +1,6 @@
 # AutoMcdonalds  
 Make mcddaily run automatically on pc.   
-http://jcchen.csie.org:9010 (For testing only, do not have auto drawing lottery and not always online.)
+http://jcchen.csie.org:9010 (For testing only, do not have auto draw lottery and not always online.)
 
 ## Login Json  
 Key        | Value
