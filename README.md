@@ -20,8 +20,8 @@ String username;
 String password;
 String accessToken;
 String keyword; // Use to link accounts(If two accounts set the same keyword, means these accounts belong to one person.)
-String deviceUUID; // Provide randomly
-String model; // Provide randomly
+String deviceUUID; // Provided randomly
+String model; // Provided randomly
 
 /* Account constructor */
 Account account = new Account(); // Empty account.
