@@ -19,7 +19,7 @@ public class PostContent {
 
 	private class SourceInfo {
 		String deviceUUID = "e43b4f1d26bcae41";
-		final String appVersion = "2.2.5";
+		final String appVersion = "2.3.0";
 		final String versionRelease = "9";
 		String model = "Pixel 3";
 		final String platform = "Android";
@@ -111,28 +111,7 @@ public class PostContent {
 			default:
 				break;
 		}
-		
-		/*		
-		if(MODE == Constants.POSTCONTENT.MODE_LOGIN) {
-			data += this.username + this.password;
-		}
-		else if(MODE == Constants.POSTCONTENT.MODE_VERIFY_ACCESS_TOKEN) {
-			data += this.accessToken;
-		}
-		else if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET) {
-			return;
-		}
-		else if(MODE == Constants.POSTCONTENT.MODE_WEATHER_GET) {
-			return;
-		}
-		else if(MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST) {
-			return;
-		}
-		else if(MODE == Constants.POSTCONTENT.MODE_STICKER_GET_LIST) {
-			return;
-		}
-		*/
-		
+				
 		data += this.orderNo + sourceInfo.platform;
 		
 		mask = convertSymbolsToUnicode(Encrypt.encode(null, data));
@@ -185,37 +164,6 @@ public class PostContent {
 			default:
 				break;
 		}
-		
-		/*
-		if(MODE == Constants.POSTCONTENT.MODE_LOTTERY_GET || MODE == Constants.POSTCONTENT.MODE_COUPON_GET_LIST || MODE == Constants.POSTCONTENT.MODE_STICKER_GET_LIST) {
-			return "{" + "\"access_token\": " + "\"" + this.accessToken + "\"," + "\"source_info\": " + this.sourceInfo.getJson() + "}";
-		}
-
-		if(MODE == Constants.POSTCONTENT.MODE_WEATHER_GET) {
-			return "{" + "\"city\": " + "\"" + "2306179" + "\"" + "}";
-		}
-
-		if(MODE == Constants.POSTCONTENT.MODE_LOGIN) {
-			retJson += "\"account\": " + "\"" + this.username + "\"," + "\"password\": " + "\"" + this.password + "\",";
-		}
-		
-		if(MODE == Constants.POSTCONTENT.MODE_STICKER_REDEEM) {
-			retJson = "{" + "\"access_token\": " + "\"" + this.accessToken + "\"," + "\"source_info\": " + this.sourceInfo.getJson() + ",\"sticker_ids\": [";
-			for(int i = 0; i < redeemSticker.size(); i++) {
-				retJson += redeemSticker.get(i);
-				if(i < redeemSticker.size() - 1)
-					retJson += ",";
-			}
-			retJson += "]}";
-			return retJson;
-		}
-		
-		retJson += "\"OrderNo\": " + "\"" + this.orderNo + "\",";
-
-		if(MODE == Constants.POSTCONTENT.MODE_VERIFY_ACCESS_TOKEN) {
-			retJson += "\"access_token\": " + "\"" + this.accessToken + "\",";
-		}
-		*/
 		
 		return "{" + retJson + "\"mask\": " + "\"" + this.mask + "\"," + "\"source_info\": " + this.sourceInfo.getJson() + "}";
 	}
