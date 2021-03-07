@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-	compile 'com.squareup.okhttp3:okhttp:3.10.0'
+	compile 'com.squareup.okhttp3:okhttp:3.12.1'
 	//compile 'com.squareup.okio:okio:2.4.1'
 	compile 'org.json:json:20190722'
 	compile 'org.glassfish.jersey.core:jersey-server:2.29.1'
